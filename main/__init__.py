@@ -23,8 +23,6 @@ def create_app():
     app.config.from_pyfile('config.py', silent=False)
     app.config['SQLALCHEMY_DATABASE_URI'] = URL(**app.config['DATABASE'])
 
-    print(URL(**app.config['DATABASE']))
-
     db.init_app(app)
     from .models import Samsung
 

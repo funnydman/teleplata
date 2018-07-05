@@ -2,66 +2,190 @@
 
 
 {% block home %}
-    <h1><a href="
-{{ url_for('main.home') }}">TELEPLATA</a></h1>
-    <div class="brand-list">
-        <ul>
-            <li><a href="{{ url_for('main.home',
-                    brand='samsung') }}">Samsung</a></li>
-            <li><a href="
-                    {{ url_for('main.home',
-                    brand='lg') }}">Lg</a>
-            </li>
-        </ul>
-    </div>
-    <div class="search">
-        <form method="POST">
-            <label>
-                <input type="search" name="search"
-                       placeholder="Модель, main, t-con...">
-            </label>
-            <input type="submit" value="Искать">
-        </form>
-    </div>
-    <div class="models">
-        {% for model in models.items %}
-            {% if models %}
-                <ul>
-                    <li>Модель: {{ model.model }}</li>
-                    <li>Power: {{ model.power }}</li>
-                    <li>T-con: {{ model.t_con }}</li>
-                    <li>X-MAIN: {{ model.x_main }}</li>
-                    <li>Y-MAIN: {{ model.y_main }}</li>
-                    <li>LOGIC: {{ model.logic }}</li>
-                    <li>INVERTOR: {{ model.invertor }}</li>
-                    <li>Y-SCAN: {{ model.y_scan }}</li>
-                </ul>
-            {% endif %}
-        {% endfor %}
-    </div>
-    <div class="pagination">
-        <ul>
-            {% if models.has_prev %}
-                <li><a href="?page={{ models.prev_num }}">Prev</a></li>
-            {% else %}
-                <li><a href="#">Prev</a></li>
-            {% endif %}
-            {% for page in models.iter_pages() %}
-                {% if page != models.page %}
-                    <li><a href="?page={{ page }}">{{ page }}</a></li>
-                {% else %}
-                    <li>
-                        <a href="?page={{ page }}"
-                           class="active">{{ page }}</a></li>
-                {% endif %}
-            {% endfor %}
+    <div class="container">
+        <header>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="site-description">
+                        <h1>Продажа плат к LCD и плазменным телевизорам</h1>
+                        <h2>По России и странам СНГ</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="header-contacts">
+                        <ul>
+                            <li><img src="{{ url_for('static',
+                                    filename='img/mts.png') }}"
+                                     alt="mts logo"><span>+375445434849</span>
+                            </li>
+                            <li><img src="{{ url_for('static',
+                                    filename='img/velcome.png') }}"
+                                     alt="velcome logo"><span>+3754442334849</span>
+                            </li>
+                            <li><img src="{{ url_for('static',
+                                    filename='img/mail.png') }}"
+                                     alt="mail img"><span>teleplata@mail.ru</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-            {% if models.has_next %}
-                <li><a href="?page={{ models.next_num }}">Next</a></li>
-            {% else %}
-                <li><a href="#">Next</a></li>
-            {% endif %}
-        </ul>
+        </header>
+        <div class="main">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="search-form">
+                        <form>
+                            <input type="search" name="search">
+                            <input class="button" type="submit" value="Искать">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="brands">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                        <ul>
+                            <li><a href="#">Samsung</a></li>
+                            <li><a href="#">Lg</a></li>
+                            <li><a href="#">Горизонт</a></li>
+                            <li><a href="#">Витязь</a></li>
+                            <li><a href="#">Philips</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                        <ul>
+                            <li><a href="#">Toshiba</a></li>
+                            <li><a href="#">Tomson</a></li>
+                            <li><a href="#">Sharp</a></li>
+                            <li><a href="#">Sony</a></li>
+                            <li><a href="#">Panasonic</a></li>
+
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                        <ul>
+                            <li><a href="#">Bbk</a></li>
+                            <li><a href="#">Shinco</a></li>
+                            <li><a href="#">Dynex</a></li>
+                            <li><a href="#">Manta</a></li>
+                            <li><a href="#">Dell</a></li>
+
+                        </ul>
+                    </div>
+
+
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                        <ul>
+                            <li><a href="#">Daevoo</a></li>
+                            <li><a href="#">Shivaki</a></li>
+                            <li><a href="#">Supra</a></li>
+                            <li><a href="#">Grundic</a></li>
+                            <li><a href="#">Telefunken</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="model-list">
+                {% for model in models.items %}
+                    {% if models %}
+                        <div class="model">
+                            <div class="row">
+                                <div class="col-md-8 col-md-offset-2">
+                                    <ul class="model-title">
+                                        <li>
+                                            <a href="#">{{ model.model }}</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="model-detail">
+                                        <li>
+                                            Inverter:<span>{{ model.invertor }}</span>
+                                            <img
+                                                    src="https://visual.ly/blog/wp-content/uploads/2014/06/IMG_6424-1300x866.jpg"
+                                                    alt=""></li>
+                                        <li>
+                                            X-main<span>{{ model.x_main }}</span>
+                                            <img
+                                                    src="https://visual.ly/blog/wp-content/uploads/2014/06/IMG_6424-1300x866.jpg"
+                                                    alt=""></li>
+                                        <li>Y-main:
+                                            <span>{{ model.y_main }}</span>
+                                            <img
+                                                    src="https://visual.ly/blog/wp-content/uploads/2014/06/IMG_6424-1300x866.jpg"
+                                                    alt=""></li>
+                                        <li>X-main<span>HSDJW6323</span> <img
+                                                src="https://visual.ly/blog/wp-content/uploads/2014/06/IMG_6424-1300x866.jpg"
+                                                alt=""></li>
+                                        <li>Logic<span>JDWKC2343</span> <img
+                                                src="https://visual.ly/blog/wp-content/uploads/2014/06/IMG_6424-1300x866.jpg"
+                                                alt=""></li>
+                                        <li>X-scan<span>HDEWK2323</span> <img
+                                                src="https://visual.ly/blog/wp-content/uploads/2014/06/IMG_6424-1300x866.jpg"
+                                                alt=""></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="pagination">
+                <ul>
+                    {% if models.has_prev %}
+                        <li><a href="?page={{ models.prev_num }}">Prev</a></li>
+                    {% else %}
+                        <li><a href="#">Prev</a></li>
+                    {% endif %}
+                    {% for page in models.iter_pages() %}
+                        {% if page != models.page %}
+                            <li><a href="?page={{ page }}">{{ page }}</a></li>
+                        {% else %}
+                            <li>
+                                <a href="?page={{ page }}"
+                                   class="active">{{ page }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if models.has_next %}
+                        <li><a href="?page={{ models.next_num }}">Next</a></li>
+                    {% else %}
+                        <li><a href="#">Next</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        <footer>
+            <h2>Нашли то что искали?</h2>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="delivery">
+                        <p>Платы сняты с <span class="marked">битых</span> LCD
+                            и
+                            плазменных
+                            телевизоров.<br>
+                            Каждая плата перед отправкой проверяется.</p>
+                        <p>По России и странам СНГ доставка по предоплате.<br>
+                            В среднем плата идет 5-10 дней.</p>
+                        <p>По Белорусси возможна наложным платежом<br>
+                            В среднем посылка идет 2-5 дней</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h3>Звоните и пишите</h3>
+                    <p>+375233223443</p>
+                    <p>+375342342133</p>
+                    <p>teleplata@mail.ru</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="copyright text-center">
+                    <p>Created by <a href="#">FUNNYDMAN</a></p>
+                </div>
+            </div>
+        </footer>
     </div>
 
 

@@ -1,0 +1,184 @@
+@import "fonts"
+@import "libs"
+@import "vars"
+
+*
+  -webkit-box-sizing: border-box
+  -moz-box-sizing: border-box
+  box-sizing: border-box
+  &:before, &:after
+    -webkit-box-sizing: border-box
+    -moz-box-sizing: border-box
+    box-sizing: border-box
+
+*::-webkit-input-placeholder
+  color: #666
+  opacity: 1
+
+*:-moz-placeholder
+  color: #666
+  opacity: 1
+
+*::-moz-placeholder
+  color: #666
+  opacity: 1
+
+*:-ms-input-placeholder
+  color: #666
+  opacity: 1
+
+body input:focus:required:invalid,
+body textarea:focus:required:invalid
+  color: #666
+
+body input:required:valid,
+body textarea:required:valid
+  color: #666
+
+html, body
+  height: 100%
+
+body
+  font-size: 16px
+  min-width: 320px
+  position: relative
+  line-height: 1.4
+  font-family: $default-font
+  overflow-x: hidden
+  background-color: $accent
+
+.img-responsive
+  display: block
+  max-width: 100%
+  height: auto
+
+.text-center
+  text-align: center
+
+::selection
+  //background-color: $accent
+  color: orange
+
+a
+  color: $accent
+  &:hover, &:focus
+    text-decoration: none
+    color: $accent
+
+ul, li
+  padding: 0
+  margin: 0
+
+li
+  list-style: none
+
+.button
+  background-color: $pink
+  border: none
+  color: $accent
+  text-transform: uppercase
+
+header
+  background-color: #54494b
+  color: $accent
+  line-height: 1.1
+  text-align: center
+  padding: 14px 5px
+  h1
+    font-size: 1.5em
+    padding: 0 5px
+  h2
+    color: #b6a56c
+    font-size: 1.3em
+  .header-contacts
+    padding: 20px 0
+    ul
+      display: flex
+      justify-content: space-around
+      flex-wrap: wrap
+      li
+        padding: 8px 0
+      span
+        padding-left: 6px
+    img
+      height: 32px
+      width: 32px
+
+.search-form
+  text-align: center
+  padding: 30px 2px
+  input[name="search"]
+    height: 30px
+    width: 200px
+    text-indent: 4px
+    vertical-align: top
+  input[type="submit"]
+    margin-left: -5px
+    padding: 7px 6px
+    font-size: 16px
+
+.brands
+  text-transform: uppercase
+  ul
+    display: flex
+    flex-direction: column
+    width: 50%
+    margin: 10px auto
+    a
+      color: #54494b
+
+.model-list
+  padding: 50px 0
+  .model
+    margin: 7px 0
+  .model-title
+    background-color: $pink
+    padding: 3px 8px
+    cursor: pointer
+    transition: all .3s ease
+    position: relative
+    &:hover
+      background: darken($pink, 10%)
+    a
+      color: $accent
+      &::after
+        content: '▼'
+        position: absolute
+        right: 10px
+
+  .model-detail
+    display: none
+    li
+      display: flex
+      justify-content: space-between
+      padding: 4px 0
+      align-items: center
+    img
+      width: 32px
+      height: 28px
+
+.pagination
+  text-align: center
+  margin: 15px 0 40px 0
+  li
+    display: inline-block
+    a
+      background-color: $pink
+      padding: 6px 12px
+      margin-left: -4px
+      &.active
+        background-color: darken($pink, 10%)
+
+footer
+  .delivery
+    p
+      .marked
+        color: orange
+  h2
+    text-align: center
+  background-color: $dark-liver
+  color: $accent
+  padding: 10px 14px
+
+@import "media"
+// Всегда в конце
