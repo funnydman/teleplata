@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+
+{% block home %}
+    <h1><a href="
+{{ url_for('main.home') }}">TELEPLATA</a></h1>
+    <div class="brand-list">
+        <ul>
+            <li><a href="{{ url_for('main.home',
+                    brand='samsung') }}">Samsung</a></li>
+            <li><a href="
+                    {{ url_for('main.home',
+                    brand='lg') }}">Lg</a>
+            </li>
+        </ul>
+    </div>
+    <div class="search">
+        <form method="POST">
+            <label>
+                <input type="search" name="search"
+                       placeholder="Модель, main, t-con...">
+            </label>
+            <input type="submit" value="Искать">
+        </form>
+    </div>
+    <div class="models">
+        {% for model in models.items %}
+            {% if models %}
+                <ul>
+                    <li>Модель: {{ model.model }}</li>
+                    <li>Power: {{ model.power }}</li>
+                    <li>T-con: {{ model.t_con }}</li>
+                    <li>X-MAIN: {{ model.x_main }}</li>
+                    <li>Y-MAIN: {{ model.y_main }}</li>
+                    <li>LOGIC: {{ model.logic }}</li>
+                    <li>INVERTOR: {{ model.invertor }}</li>
+                    <li>Y-SCAN: {{ model.y_scan }}</li>
+                </ul>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="pagination">
+        <ul>
+            {% if models.has_prev %}
+                <li><a href="?page={{ models.prev_num }}">Prev</a></li>
+            {% else %}
+                <li><a href="#">Prev</a></li>
+            {% endif %}
+            {% for page in models.iter_pages() %}
+                {% if page != models.page %}
+                    <li><a href="?page={{ page }}">{{ page }}</a></li>
+                {% else %}
+                    <li>
+                        <a href="?page={{ page }}"
+                           class="active">{{ page }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if models.has_next %}
+                <li><a href="?page={{ models.next_num }}">Next</a></li>
+            {% else %}
+                <li><a href="#">Next</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+
+{% endblock %}
+
+
