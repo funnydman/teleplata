@@ -1,5 +1,11 @@
-$(function() {
+$(function () {
+    $('.model-title').click(function () {
+        var id = $(this).data("id");
 
-	// Custom JS
+        $('.model-detail-' + id).toggle();
+        console.log(id);
+
+    });
+
 
 });

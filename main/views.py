@@ -5,16 +5,12 @@ from .utils import get_class_by_tablename
 main = Blueprint('main', __name__)
 
 
-def search_in_models():
-    pass
-
-
 @main.route('/')
 @main.route('/<brand>')
 def home(brand='samsung'):
     page = request.args.get('page', 1)
     models = get_class_by_tablename(brand).query.paginate(page=int(page),
-                                                          per_page=2,
+                                                          per_page=8,
                                                           error_out=False)
 
     return render_template('home/home.html', models=models)

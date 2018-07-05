@@ -1,0 +1,32 @@
+{% block header %}
+    <header>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="site-description">
+                    <h1>Продажа плат к LCD и плазменным телевизорам</h1>
+                    <h2>По России и странам СНГ</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="header-contacts">
+                    <ul>
+                        <li><img src="{{ url_for('static',
+                                filename='img/mts.png') }}"
+                                 alt="mts logo"><span>+375295634740</span>
+                        </li>
+                        <li><img src="{{ url_for('static',
+                                filename='img/velcome.png') }}"
+                                 alt="velcome logo"><span>+375296434740</span>
+                        </li>
+                        <li><img src="{{ url_for('static',
+                                filename='img/mail.png') }}"
+                                 alt="mail img"><span>teleplata@mail.ru</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
