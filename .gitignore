@@ -111,6 +111,6 @@ venv.bak/
 .idea
 
 # project
-instance/
+instance/config.py
 
 static/node_modules
