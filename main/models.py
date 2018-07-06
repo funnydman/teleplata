@@ -26,3 +26,129 @@ class Lg(Brand):
 
     def __repr__(self):
         return '<Lg %r>' % self.model
+
+
+class Horizont(Brand):
+    __tablename__ = 'horizont'
+
+    def __repr__(self):
+        return '<Horizont %r>' % self.model
+
+
+class Vityaz(Brand):
+    __tablename__ = 'vityaz'
+
+    def __repr__(self):
+        return '<Lg %r>' % self.model
+
+
+class Philips(Brand):
+    __tablename__ = 'philips'
+
+    def __repr__(self):
+        return '<Philips %r>' % self.model
+
+
+class Toshiba(Brand):
+    __tablename__ = 'toshiba'
+
+    def __repr__(self):
+        return '<Toshiba %r>' % self.model
+
+
+class Tomson(Brand):
+    __tablename__ = 'tomson'
+
+    def __repr__(self):
+        return '<Tomson %r>' % self.model
+
+
+class Sharp(Brand):
+    __tablename__ = 'sharp'
+
+    def __repr__(self):
+        return '<Sharp %r>' % self.model
+
+
+class Sony(Brand):
+    __tablename__ = 'sony'
+
+    def __repr__(self):
+        return '<Sony %r>' % self.model
+
+
+class Panasonic(Brand):
+    __tablename__ = 'panasonic'
+
+    def __repr__(self):
+        return '<Panasonic %r>' % self.model
+
+
+class Bbk(Brand):
+    __tablename__ = 'bbk'
+
+    def __repr__(self):
+        return '<Bbk %r>' % self.model
+
+
+class Shinco(Brand):
+    __tablename__ = 'shinco'
+
+    def __repr__(self):
+        return '<Shinco %r>' % self.model
+
+
+class Dynex(Brand):
+    __tablename__ = 'dynex'
+
+    def __repr__(self):
+        return '<Dynex %r>' % self.model
+
+
+class Manta(Brand):
+    __tablename__ = 'manta'
+
+    def __repr__(self):
+        return '<Manta %r>' % self.model
+
+
+class Dell(Brand):
+    __tablename__ = 'dell'
+
+    def __repr__(self):
+        return '<Dell %r>' % self.model
+
+
+class Daevoo(Brand):
+    __tablename__ = 'daevoo'
+
+    def __repr__(self):
+        return '<Daevoo %r>' % self.model
+
+
+class Shivaki(Brand):
+    __tablename__ = 'shivaki'
+
+    def __repr__(self):
+        return '<Shivaki %r>' % self.model
+
+
+class Supra(Brand):
+    __tablename__ = 'supra'
+
+    def __repr__(self):
+        return '<Supra %r>' % self.model
+
+
+class Grundic(Brand):
+    __tablename__ = 'grundic'
+
+    def __repr__(self):
+        return '<Grundic %r>' % self.model
+
+
+class Telefunken(Brand):
+    __tablename__ = 'telefunken'
+
+    def __repr__(self):
+        return '<Telefunken %r>' % self.model

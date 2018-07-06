@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="search-form">
-                    <form>
+                    <form method="POST">
                         <input type="search" name="search">
                         <input class="button" type="submit" value="Искать">
                     </form>
@@ -31,38 +31,54 @@
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
                     <ul>
-                        <li><a href="#">Toshiba</a></li>
-                        <li><a href="#">Tomson</a></li>
-                        <li><a href="#">Sharp</a></li>
-                        <li><a href="#">Sony</a></li>
-                        <li><a href="#">Panasonic</a></li>
+                        <li><a href="{{ url_for('main.home',
+                                brand='toshiba') }}">Toshiba</a></li>
+                        <li><a href="{{ url_for('main.home',
+                                brand='tomson') }}">Tomson</a></li>
+                        <li><a href="{{ url_for('main.home',
+                                brand='sharp') }}">Sharp</a></li>
+                        <li><a href="{{ url_for('main.home',
+                                brand='sony') }}">Sony</a></li>
+                        <li><a href="{{ url_for('main.home',
+                                brand='panasonic') }}">Panasonic</a></li>
 
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
                     <ul>
-                        <li><a href="#">Bbk</a></li>
-                        <li><a href="#">Shinco</a></li>
-                        <li><a href="#">Dynex</a></li>
-                        <li><a href="#">Manta</a></li>
-                        <li><a href="#">Dell</a></li>
+                        <li><a href="{{ url_for('main.home',
+                                brand='bbk') }}">Bbk</a></li>
+                        <li><a href="{{ url_for('main.home',
+                                brand='shinco') }}">Shinco</a></li>
+                        <li><a href="{{ url_for('main.home',
+                                brand='dynex') }}">Dynex</a></li>
+                        <li><a href="{{ url_for('main.home',
+                                brand='manta') }}">Manta</a></li>
+                        <li><a href="{{ url_for('main.home',
+                                brand='dell') }}">Dell</a></li>
 
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
                     <ul>
-                        <li><a href="#">Daevoo</a></li>
-                        <li><a href="#">Shivaki</a></li>
-                        <li><a href="#">Supra</a></li>
-                        <li><a href="#">Grundic</a></li>
-                        <li><a href="#">Telefunken</a></li>
+                        <li><a href="{{ url_for('main.home',
+                                brand='daevoo') }}">Daevoo</a></li>
+                        <li><a href="{{ url_for('main.home',
+                                brand='shivaki') }}">Shivaki</a></li>
+                        <li><a href="{{ url_for('main.home',
+                                brand='supra') }}">Supra</a></li>
+                        <li><a href="{{ url_for('main.home',
+                                brand='grundic') }}">Grundic</a></li>
+                        <li><a href="{{ url_for('main.home',
+                                brand='telefunken') }}">Telefunken</a></li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="model-list">
-            {% for model in models.items %}
-                {% if models %}
+            {% if models %}
+
+                {% for model in models.items %}
                     <div class="model">
                         <div class="row">
                             <div class="col-md-8 col-md-offset-2">
@@ -102,32 +118,34 @@
                             </div>
                         </div>
                     </div>
-                {% endif %}
-            {% endfor %}
+                {% endfor %}
+            {% endif %}
         </div>
         <div class="pagination">
-            <ul>
-                {% if models.has_prev %}
-                    <li><a href="?page={{ models.prev_num }}">Prev</a></li>
-                {% else %}
-                    <li><a href="#">Prev</a></li>
-                {% endif %}
-                {% for page in models.iter_pages() %}
-                    {% if page != models.page %}
-                        <li><a href="?page={{ page }}">{{ page }}</a></li>
+            {% if models.pages > 1 %}
+                <ul>
+                    {% if models.has_prev %}
+                        <li><a href="?page={{ models.prev_num }}">Prev</a></li>
                     {% else %}
-                        <li>
-                            <a href="?page={{ page }}"
-                               class="active">{{ page }}</a></li>
+                        <li><a href="#">Prev</a></li>
                     {% endif %}
-                {% endfor %}
+                    {% for page in models.iter_pages() %}
+                        {% if page != models.page %}
+                            <li><a href="?page={{ page }}">{{ page }}</a></li>
+                        {% else %}
+                            <li>
+                                <a href="?page={{ page }}"
+                                   class="active">{{ page }}</a></li>
+                        {% endif %}
+                    {% endfor %}
 
-                {% if models.has_next %}
-                    <li><a href="?page={{ models.next_num }}">Next</a></li>
-                {% else %}
-                    <li><a href="#">Next</a></li>
-                {% endif %}
-            </ul>
+                    {% if models.has_next %}
+                        <li><a href="?page={{ models.next_num }}">Next</a></li>
+                    {% else %}
+                        <li><a href="#">Next</a></li>
+                    {% endif %}
+                </ul>
+            {% endif %}
         </div>
     </div>
     {% include 'footer.html' %}
