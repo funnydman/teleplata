@@ -1,0 +1,12 @@
+DEBUG = False
+TESTING = False
+
+SECRET_KEY = 'prod'
+
+
+DATABASE = {'drivername': 'postgres',
+            'database': 'your database name',
+            'username': 'your username ',
+            'password': 'your password',
+            'host': 'your host',
+            'port': 5432}
