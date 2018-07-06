@@ -18,12 +18,19 @@ def home(brand='samsung'):
     # TODO: add full-text search
     if search_query:
         models = brand.query.filter(
-            brand.model.contains(search_query)
+            brand.model.contains(search_query) |
+            brand.power.contains(search_query) |
+            brand.t_con.contains(search_query) |
+            brand.x_main.contains(search_query) |
+            brand.y_main.contains(search_query) |
+            brand.logic.contains(search_query) |
+            brand.invertor.contains(search_query) |
+            brand.y_scan.contains(search_query)
         ).paginate(
             page=int(page),
             per_page=3,
             error_out=False)
-
+        print(models)
     return render_template('home/home.html', models=models, brand=brand)
 
     @main.errorhandler(404)

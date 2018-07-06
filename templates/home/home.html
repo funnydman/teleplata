@@ -85,21 +85,26 @@
                                 <ul data-id="{{ model.id }}"
                                     class="model-title model-title-{{ model.id }}">
                                     <li>
-                                        <a href="#">{{ model.model }}</a>
+                                        <a href="#">{{ model.model }}
+                                        </a>
                                     </li>
                                 </ul>
                                 <ul data-id="{{ model.id }}"
                                     class="model-detail model-detail-{{ model.id }}">
                                     <li>
+                                        Power:<span>{{ model.power }}</span>
+                                        <img src="#" alt="">
+                                    </li>
+                                    <li>
                                         Inverter:<span>{{ model.invertor }}</span>
-                                        <img
-                                                src="#"
-                                                alt=""></li>
+                                        <img src="#" alt="">
+                                    </li>
                                     <li>
                                         X-main<span>{{ model.x_main }}</span>
                                         <img
                                                 src="#"
-                                                alt=""></li>
+                                                alt="">
+                                    </li>
                                     <li>Y-main:
                                         <span>{{ model.y_main }}</span>
                                         <img
@@ -157,6 +162,7 @@
         {% endif %}
     </div>
     {% include 'footer.html' %}
+
 {% endblock %}
 
 
