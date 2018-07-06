@@ -13,7 +13,7 @@ def home(brand='samsung'):
     search_query = request.args.get('search')
     models = brand.query.paginate(
         page=int(page),
-        per_page=3,
+        per_page=15,
         error_out=False)
     # TODO: add full-text search
     if search_query:
@@ -23,9 +23,8 @@ def home(brand='samsung'):
             page=int(page),
             per_page=3,
             error_out=False)
-        print(models.items)
 
-    return render_template('home/home.html', models=models)
+    return render_template('home/home.html', models=models, brand=brand)
 
     @main.errorhandler(404)
     def page_not_found(error):

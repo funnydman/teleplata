@@ -7,7 +7,8 @@
             <div class="col-md-12">
                 <div class="search-form">
                     <form method="GET">
-                        <input type="search" name="search">
+                        <input type="search" name="search"
+                               placeholder="искать в: {{ brand.__tablename__ }}">
                         <input class="button" type="submit" value="Искать">
                     </form>
                 </div>
@@ -75,9 +76,8 @@
                 </div>
             </div>
         </div>
-        <div class="model-list">
-            {% if models %}
-
+        {% if models.items %}
+            <div class="model-list">
                 {% for model in models.items %}
                     <div class="model">
                         <div class="row">
@@ -119,34 +119,42 @@
                         </div>
                     </div>
                 {% endfor %}
-            {% endif %}
-        </div>
-        <div class="pagination">
-            {% if models.pages > 1 %}
-                <ul>
-                    {% if models.has_prev %}
-                        <li><a href="?page={{ models.prev_num }}">Prev</a></li>
-                    {% else %}
-                        <li><a href="#">Prev</a></li>
-                    {% endif %}
-                    {% for page in models.iter_pages() %}
-                        {% if page != models.page %}
-                            <li><a href="?page={{ page }}">{{ page }}</a></li>
+            </div>
+            <div class="pagination">
+                {% if models.pages > 1 %}
+                    <ul>
+                        {% if models.has_prev %}
+                            <li><a href="?page={{ models.prev_num }}">Prev</a>
+                            </li>
                         {% else %}
-                            <li>
-                                <a href="?page={{ page }}"
-                                   class="active">{{ page }}</a></li>
+                            <li><a href="#">Prev</a></li>
                         {% endif %}
-                    {% endfor %}
+                        {% for page in models.iter_pages() %}
+                            {% if page != models.page %}
+                                <li><a href="?page={{ page }}">{{ page }}</a>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <a href="?page={{ page }}"
+                                       class="active">{{ page }}</a></li>
+                            {% endif %}
+                        {% endfor %}
 
-                    {% if models.has_next %}
-                        <li><a href="?page={{ models.next_num }}">Next</a></li>
-                    {% else %}
-                        <li><a href="#">Next</a></li>
-                    {% endif %}
-                </ul>
-            {% endif %}
-        </div>
+                        {% if models.has_next %}
+                            <li><a href="?page={{ models.next_num }}">Next</a>
+                            </li>
+                        {% else %}
+                            <li><a href="#">Next</a></li>
+                        {% endif %}
+                    </ul>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="nothing-to-show">
+                <h1>Упс, похоже нет плат для данного бренда</h1>
+                <h2>Убедитесь в том, что запрос введен верно</h2>
+            </div>
+        {% endif %}
     </div>
     {% include 'footer.html' %}
 {% endblock %}
