@@ -22,9 +22,9 @@ def create_app():
                 static_folder=STATIC_FOLDER)
     app.config.from_pyfile('config.py', silent=False)
     app.config['SQLALCHEMY_DATABASE_URI'] = URL(**app.config['DATABASE'])
-    app.config['WHOOSH_BASE'] = 'whoosh'
 
     db.init_app(app)
+
     from .models import Samsung, Sony, Sharp, Shinco, Shivaki, Supra, Philips, \
         Panasonic, Toshiba, Telefunken, Tomson, Horizont, Vityaz, Dell, Daevoo, \
         Dynex, Grundic, Lg

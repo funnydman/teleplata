@@ -5,18 +5,16 @@ from .utils import get_class_by_tablename
 main = Blueprint('main', __name__)
 
 
-@main.route('/')
-@main.route('/<brand>')
+@main.route('/', methods=['GET', 'POST'])
+@main.route('/<brand>', methods=['POST', 'GET'])
 def home(brand='samsung'):
-    search = request.args.get('search', 'sa')
     page = request.args.get('page', 1)
     brand = get_class_by_tablename(brand)
-    # if search:
-    #     brand = brand.query.filter(power=search)
+    search_query = request.args.get('search')
 
     models = brand.query.paginate(
         page=int(page),
-        per_page=8,
+        per_page=3,
         error_out=False)
 
     return render_template('home/home.html', models=models)
