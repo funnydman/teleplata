@@ -3,6 +3,7 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.engine.url import URL
+from werkzeug.contrib.fixers import ProxyFix
 
 db = SQLAlchemy()
 
@@ -30,5 +31,5 @@ def create_app():
         Dynex, Grundic, Lg
     from . import views
     app.register_blueprint(views.main)
-
+    app.wsgi_app = ProxyFix(app.wsgi_app)
     return app
