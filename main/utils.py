@@ -12,5 +12,5 @@ def get_class_by_tablename(tablename):
             return c
 
 
-def search_in_models(model, search):
+def search_in_all_model_names(model, search):
     pass
