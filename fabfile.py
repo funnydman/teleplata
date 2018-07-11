@@ -32,7 +32,7 @@ def install_packages():
 
 
 def create_database():
-    if not conn.sudo(f'psql -c "CREATE DATABASE {database};" -U postgres', warn=True).failed:
+    if conn.sudo(f'psql -c "CREATE DATABASE {database};" -U postgres', warn=True).ok:
         conn.sudo(
             f"""psql -c "CREATE USER {username} WITH password \'{password}\'" -U postgres""")
         conn.sudo(
@@ -43,11 +43,12 @@ def create_database():
 def configure_project():
     conn.put('instance/config.py', f'{REPO_NAME}/instance/config.py')
     conn.put('instance/nginx.conf', '/etc/nginx/sites-available/tele.conf')
-    conn.sudo('ln -s /etc/nginx/sites-available/tele.conf /etc/nginx/sites-enabled/')
+    conn.sudo('ln -s /etc/nginx/sites-available/tele.conf /etc/nginx/sites-enabled/', warn=True)
     conn.sudo('service nginx reload')
     with conn.cd(f'{REPO_NAME}'):
         # create and configure virtualenv
-        conn.run('virtualenv --python=$(which python3) venv')
+        if conn.run('test -d venv', warn=True).failed:
+            conn.run('virtualenv --python=$(which python3) venv')
         conn.run('source venv/bin/activate && pip install -r requirements.txt')
 
 
@@ -57,7 +58,7 @@ def run_application():
 
 
 def main():
-    pull_repository()
+    pull_repository(conn)
     install_packages()
     create_database()
     configure_project()
