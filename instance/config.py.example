@@ -3,10 +3,15 @@ TESTING = False
 
 SECRET_KEY = 'prod'
 
+DATABASE_USER = ''
+DATABASE_PASSWORD = ''
+DATABASE_NAME = ''
+DATABASE_HOST = 'localhost'
+DATABASE_POST = 5432
 
 DATABASE = {'drivername': 'postgres',
-            'database': 'your database name',
-            'username': 'your username ',
-            'password': 'your password',
-            'host': 'your host',
-            'port': 5432}
+            'database': DATABASE_NAME,
+            'username': DATABASE_USER,
+            'password': DATABASE_PASSWORD,
+            'host': DATABASE_HOST,
+            'port': DATABASE_POST}
