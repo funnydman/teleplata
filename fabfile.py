@@ -14,15 +14,14 @@ password = DATABASE['password']
 config = Config(overrides={'sudo': {'password': REMOTE_PASS}})
 conn = Connection(host=REMOTE_HOST, config=config)
 
-PROJECT_DIR = conn.run('pwd')
-
-VENV_DIR = f'{PROJECT_DIR}/venv'
-
 REPO_URL = 'https://github.com/FUNNYDMAN/teleplata.git'
+
+# TODO get repo name from repo_url
+REPO_NAME = 'teleplata'
 
 
 def pull_repository():
-    if conn.run('test -d teleplata', warn=True).failed:
+    if conn.run(f'test -d {REPO_NAME}', warn=True).failed:
         conn.run(f"git clone {REPO_URL}")
 
 
@@ -33,38 +32,36 @@ def install_packages():
 
 
 def create_database():
-    # conn.sudo(f'sudo -i -u postgres createdb {database}')
-    # conn.sudo(f'psql -c "CREATE DATABASE {database};" -U postgres')
-    conn.sudo(
-        f"""psql -c "CREATE USER {username} WITH password \'{password}\'" -U postgres""")
-    conn.sudo(
-        f'psql -c "GRANT ALL ON DATABASE {database} TO {username};" -U postgres')
-    conn.sudo(f'psql -c "ALTER USER {username} CREATEDB;" -U postgres')
+    if not conn.sudo(f'psql -c "CREATE DATABASE {database};" -U postgres', warn=True).failed:
+        conn.sudo(
+            f"""psql -c "CREATE USER {username} WITH password \'{password}\'" -U postgres""")
+        conn.sudo(
+            f'psql -c "GRANT ALL ON DATABASE {database} TO {username};" -U postgres')
+        conn.sudo(f'psql -c "ALTER USER {username} CREATEDB;" -U postgres')
 
 
 def configure_project():
-    # conn.put('instance/config.py', 'teleplata/instance/config.py')
-    # conn.put('instance/nginx.conf', '/etc/nginx/sites-available/tele.conf')
-    # conn.sudo('ln -s /etc/nginx/sites-available/tele.conf /etc/nginx/sites-enabled/')
-    conn.sudo('service nginx restart')
-    # with conn.cd('teleplata'):
-    #     # create virtualenv
-    #     conn.run('virtualenv --python=$(which python3) venv')
-    #     conn.run('source venv/bin/activate && pip install -r requirements.txt')
-    #     conn.run("flask run")
+    conn.put('instance/config.py', f'{REPO_NAME}/instance/config.py')
+    conn.put('instance/nginx.conf', '/etc/nginx/sites-available/tele.conf')
+    conn.sudo('ln -s /etc/nginx/sites-available/tele.conf /etc/nginx/sites-enabled/')
+    conn.sudo('service nginx reload')
+    with conn.cd(f'{REPO_NAME}'):
+        # create and configure virtualenv
+        conn.run('virtualenv --python=$(which python3) venv')
+        conn.run('source venv/bin/activate && pip install -r requirements.txt')
 
 
 def run_application():
-    with conn.cd('teleplata'):
+    with conn.cd(f'{REPO_NAME}'):
         conn.run('source venv/bin/activate && gunicorn main:"create_app()"')
 
 
 def main():
+    pull_repository()
+    install_packages()
+    create_database()
     configure_project()
     run_application()
-    # pull_repository()
-    # install_packages()
-    # create_database()
 
 
 main()
