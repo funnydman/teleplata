@@ -34,11 +34,10 @@ def install_packages():
 
 
 def build_staticfiles():
-    with conn.cd(f"{REPO_NAME}"):
-        with conn.cd("static"):
-            if conn.run("test -d node_modules", warn=True).failed:
-                conn.sudo("npm install")
-            conn.sudo("npm run build")
+    with conn.cd(f'{REPO_NAME}/static'):
+        if conn.run("test -d node_modules", warn=True).failed:
+            conn.run("npm install")
+        conn.run("npm run build")
 
 
 def create_database():
@@ -54,12 +53,14 @@ def configure_project():
     conn.put('instance/config.py', f'{REPO_NAME}/instance/config.py')
     conn.put('instance/nginx.conf', '/etc/nginx/sites-available/tele.conf')
     conn.sudo('ln -s /etc/nginx/sites-available/tele.conf /etc/nginx/sites-enabled/', warn=True)
+    conn.put('instance/teleplata.conf', '/etc/supervisor/conf.d/teleplata.conf')
+    conn.sudo("sudo supervisorctl reload")
     conn.sudo('service nginx reload')
     with conn.cd(f'{REPO_NAME}'):
         # create and configure virtualenv
         if conn.run('test -d venv', warn=True).failed:
             conn.run('virtualenv --python=$(which python3) venv')
-        conn.run('source venv/bin/activate && pip install -r requirements.txt')
+            conn.run('source venv/bin/activate && pip install -r requirements.txt')
 
 
 def run_application():
@@ -68,12 +69,12 @@ def run_application():
 
 
 def main():
-    pull_repository()
-    install_packages()
-    build_staticfiles
-    create_database()
+    # pull_repository()
+    # install_packages()
+    # build_staticfiles()
+    # create_database()
     configure_project()
-    run_application()
+    # run_application()
 
 
 main()
