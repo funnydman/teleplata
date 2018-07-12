@@ -21,6 +21,7 @@ REPO_NAME = 'teleplata'
 
 
 def pull_repository():
+    conn.sudo("chown root 777")
     if conn.run(f'test -d {REPO_NAME}', warn=True).failed:
         conn.run(f"git clone {REPO_URL}")
 
@@ -69,9 +70,9 @@ def run_application():
 
 
 def main():
-    # pull_repository()
-    # install_packages()
-    # build_staticfiles()
+    pull_repository()
+    install_packages()
+    build_staticfiles()
     create_database()
     configure_project()
     run_application()
