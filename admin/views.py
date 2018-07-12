@@ -1,6 +1,8 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
 
 from main import TEMPLATE_FOLDER, STATIC_FOLDER
+from main import db
+from main.utils import get_class_by_tablename
 
 bp_admin = Blueprint('admin', __name__,
                      url_prefix='/admin',
@@ -12,12 +14,29 @@ bp_admin = Blueprint('admin', __name__,
 def admin():
     return render_template('admin/admin.html')
 
-#
-# @bp_admin.route('/<brand>')
-# def show_models_by_brand(brand):
-#     from main.utils import get_class_by_tablename
-#     page = request.args.get('page', 1)
-#     models = get_class_by_tablename(brand).query.paginate(page=int(page),
-#                                                           per_page=2,
-#                                                           error_out=False)
-#     return render_template('admin/models/model-list.html', models=models)
+
+@bp_admin.route('/<brand>', methods=['GET', 'POST'])
+def add_new_model(brand):
+    is_sent_ok = False
+    message = None
+    brand = get_class_by_tablename(brand)
+    if request.method == 'POST':
+        model = request.form['model']
+        power = request.form['power']
+        t_con = request.form['t_con']
+        x_main = request.form['x_main']
+        y_main = request.form['y_main']
+        logic = request.form['logic']
+        invertor = request.form['invertor']
+        y_scan = request.form['y_scan']
+        new_obj = brand(model=model, power=power, t_con=t_con, x_main=x_main,
+                        y_main=y_main, logic=logic, invertor=invertor, y_scan=y_scan)
+        if not brand.query.filter_by(model=model).first():
+            db.session.add(new_obj)
+            db.session.commit()
+            is_sent_ok = True
+        else:
+            message = 'Такая модель уже есть в базе данных'
+
+    return render_template('admin/models/model-add.html', brand=brand,
+                           is_sent_ok=is_sent_ok, message=message)

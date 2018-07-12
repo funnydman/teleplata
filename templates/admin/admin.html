@@ -1,9 +1,75 @@
+{% extends 'base.html' %}
 {% block admin %}
-    <header>
+    <header class="admin-header">
         <div class="row">
             <div class="col-md-12">
-                <h1><a href="#">admin</a></h1>
+                <h1><a href="{{ url_for('admin.admin') }}">admin</a></h1>
             </div>
         </div>
     </header>
+    <div class="brands">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                <ul>
+                    <li><a href="{{ url_for('admin.add_new_model',
+                            brand='samsung') }}">Samsung</a></li>
+                    <li><a href="{{ url_for('admin.add_new_model',
+                            brand='lg') }}">Lg</a></li>
+                    <li><a href="{{ url_for('admin.add_new_model',
+                            brand='horizont') }}">Горизонт</a></li>
+                    <li><a href="{{ url_for('admin.add_new_model',
+                            brand='vityaz') }}">Витязь</a></li>
+                    <li><a href="{{ url_for('admin.add_new_model',
+                            brand='philips') }}">Philips</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                <ul>
+                    <li><a href="{{ url_for('main.home',
+                            brand='toshiba') }}">Toshiba</a></li>
+                    <li><a href="{{ url_for('main.home',
+                            brand='tomson') }}">Tomson</a></li>
+                    <li><a href="{{ url_for('main.home',
+                            brand='sharp') }}">Sharp</a></li>
+                    <li><a href="{{ url_for('main.home',
+                            brand='sony') }}">Sony</a></li>
+                    <li><a href="{{ url_for('main.home',
+                            brand='panasonic') }}">Panasonic</a></li>
+
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                <ul>
+                    <li><a href="{{ url_for('main.home',
+                            brand='bbk') }}">Bbk</a></li>
+                    <li><a href="{{ url_for('main.home',
+                            brand='shinco') }}">Shinco</a></li>
+                    <li><a href="{{ url_for('main.home',
+                            brand='dynex') }}">Dynex</a></li>
+                    <li><a href="{{ url_for('main.home',
+                            brand='manta') }}">Manta</a></li>
+                    <li><a href="{{ url_for('main.home',
+                            brand='dell') }}">Dell</a></li>
+
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                <ul>
+                    <li><a href="{{ url_for('main.home',
+                            brand='daevoo') }}">Daevoo</a></li>
+                    <li><a href="{{ url_for('main.home',
+                            brand='shivaki') }}">Shivaki</a></li>
+                    <li><a href="{{ url_for('main.home',
+                            brand='supra') }}">Supra</a></li>
+                    <li><a href="{{ url_for('main.home',
+                            brand='grundic') }}">Grundic</a></li>
+                    <li><a href="{{ url_for('main.home',
+                            brand='telefunken') }}">Telefunken</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% block model_add %}
+
+    {% endblock %}
 {% endblock %}
