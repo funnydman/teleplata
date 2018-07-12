@@ -69,12 +69,12 @@ def run_application():
 
 
 def main():
-    # pull_repository()
-    # install_packages()
-    # build_staticfiles()
-    # create_database()
+    pull_repository()
+    install_packages()
+    build_staticfiles()
+    create_database()
     configure_project()
-    # run_application()
+    run_application()
 
 
 main()
