@@ -32,4 +32,6 @@ def create_app():
     from . import views
     app.register_blueprint(views.main)
     app.wsgi_app = ProxyFix(app.wsgi_app)
+
+    db.create_all()
     return app

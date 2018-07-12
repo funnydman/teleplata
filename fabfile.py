@@ -28,16 +28,16 @@ def pull_repository():
 def install_packages():
     conn.sudo("apt-get update")
     conn.sudo(
-        "apt-get install -y postgresql postgresql-contrib python3-pip python-dev virtualenv nginx")
-    conn.sudo("curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -")
+        "apt-get install -y build-essential postgresql postgresql-contrib python3-pip python-dev virtualenv nginx supervisor")
+    conn.sudo("curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -")
     conn.sudo("sudo apt-get install -y nodejs")
 
 
 def build_staticfiles():
     with conn.cd(f'{REPO_NAME}/static'):
-        if conn.run("test -d node_modules", warn=True).failed:
-            conn.run("npm install")
-        conn.run("npm run build")
+        # if conn.run("test -d node_modules", warn=True).failed:
+        conn.run("npm install && npm run build")
+        # conn.run("npm run build")
 
 
 def create_database():
@@ -69,9 +69,9 @@ def run_application():
 
 
 def main():
-    pull_repository()
-    install_packages()
-    build_staticfiles()
+    # pull_repository()
+    # install_packages()
+    # build_staticfiles()
     create_database()
     configure_project()
     run_application()
