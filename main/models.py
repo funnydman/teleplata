@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from main import db
 
 
@@ -12,6 +14,9 @@ class Brand(db.Model):
     logic = db.Column(db.String(120))
     invertor = db.Column(db.String(120))
     y_scan = db.Column(db.String(120))
+
+    pub_date = db.Column(db.DateTime,
+                         default=datetime.utcnow)
 
 
 class Samsung(Brand):

@@ -50,7 +50,18 @@
         <div class="col-md-8">
             <div class="last-added">
                 {#                TODO Добавить вывод последних пяти добавленных записей #}
-                <h3>Last added</h3>
+                {% for model in last_5_models %}
+                    <ul>
+                        <li>{{ model.model }}</li>
+                        <li>{{ model.power }}</li>
+                        <li>{{ model.t_con }}</li>
+                        <li>{{ model.x_main }}</li>
+                        <li>{{ model.y_main }}</li>
+                        <li>{{ model.logic }}</li>
+                        <li>{{ model.invertor }}</li>
+                        <li>{{ model.y_scan }}</li>
+                    </ul>
+                {% endfor %}
             </div>
         </div>
     </div>
