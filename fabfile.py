@@ -10,6 +10,9 @@ database = DATABASE['database']
 username = DATABASE['username']
 password = DATABASE['password']
 
+PACKAGES_TO_INSTALL = ("build-essential", "postgresql", "postgresql-contrib", "python3-pip", "python-dev", "virtualenv",
+                       "nginx", "supervisor")
+
 # sudo_pass = getpass.getpass("What's your sudo password?")
 config = Config(overrides={'sudo': {'password': REMOTE_PASS}})
 conn = Connection(host=REMOTE_HOST, config=config)
@@ -21,7 +24,6 @@ REPO_NAME = 'teleplata'
 
 
 def pull_repository():
-    conn.sudo("chown root 777")
     if conn.run(f'test -d {REPO_NAME}', warn=True).failed:
         conn.run(f"git clone {REPO_URL}")
     else:
@@ -31,8 +33,7 @@ def pull_repository():
 
 def install_packages():
     conn.sudo("apt-get update")
-    conn.sudo(
-        "apt-get install -y build-essential postgresql postgresql-contrib python3-pip python-dev virtualenv nginx supervisor")
+    conn.sudo(f"apt-get install -y {' '.join(PACKAGES_TO_INSTALL)}")
     conn.sudo("curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -")
     conn.sudo("sudo apt-get install -y nodejs")
 
@@ -53,13 +54,16 @@ def create_database():
         conn.sudo(f'psql -c "ALTER USER {username} CREATEDB;" -U postgres')
 
 
-def configure_project():
+def configure_server():
     conn.put('instance/config.py', f'{REPO_NAME}/instance/config.py')
     conn.put('instance/nginx.conf', '/etc/nginx/sites-available/tele.conf')
     conn.sudo('ln -s /etc/nginx/sites-available/tele.conf /etc/nginx/sites-enabled/', warn=True)
     conn.put('instance/teleplata.conf', '/etc/supervisor/conf.d/teleplata.conf')
     conn.sudo("sudo supervisorctl reload")
     conn.sudo('service nginx reload')
+
+
+def configure_project():
     with conn.cd(f'{REPO_NAME}'):
         # create and configure virtualenv
         if conn.run('test -d venv', warn=True).failed:
@@ -77,6 +81,7 @@ def main():
     install_packages()
     build_staticfiles()
     create_database()
+    configure_server()
     configure_project()
     run_application()
 
