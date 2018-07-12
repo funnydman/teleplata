@@ -24,6 +24,9 @@ def pull_repository():
     conn.sudo("chown root 777")
     if conn.run(f'test -d {REPO_NAME}', warn=True).failed:
         conn.run(f"git clone {REPO_URL}")
+    else:
+        with conn.cd(f"{REPO_NAME}"):
+            conn.run("git pull")
 
 
 def install_packages():
