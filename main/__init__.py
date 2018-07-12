@@ -33,5 +33,8 @@ def create_app():
     app.register_blueprint(views.main)
     app.wsgi_app = ProxyFix(app.wsgi_app)
 
-    db.create_all()
+    from admin import views
+    app.register_blueprint(views.bp_admin)
+
+    # db.create_all()
     return app
