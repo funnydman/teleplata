@@ -1,6 +1,9 @@
 from fabric import Connection, Config
 
-from instance.config import DATABASE
+try:
+    from instance.config import DATABASE
+except ImportError:
+    raise ImportError("Can't find instance config. Did you import it?")
 
 REMOTE_HOST = 'tele'
 REMOTE_USER = ''

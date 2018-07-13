@@ -25,16 +25,23 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = URL(**app.config['DATABASE'])
 
     db.init_app(app)
-
     from .models import Samsung, Sony, Sharp, Shinco, Shivaki, Supra, Philips, \
         Panasonic, Toshiba, Telefunken, Tomson, Horizont, Vityaz, Dell, Daevoo, \
         Dynex, Grundic, Lg
+
     from . import views
     app.register_blueprint(views.main)
-    app.wsgi_app = ProxyFix(app.wsgi_app)
 
     from admin import views
     app.register_blueprint(views.bp_admin)
 
-    # db.create_all()
+    from auth import views
+    app.register_blueprint(views.auth)
+    
+    app.wsgi_app = ProxyFix(app.wsgi_app)
+
     return app
+
+# @app.before_first_request
+# def setup():
+#     print("Hello")

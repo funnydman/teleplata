@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request
 
+from auth.views import login_required
 from main import TEMPLATE_FOLDER, STATIC_FOLDER
 from main import db
 from main.utils import get_class_by_tablename
@@ -11,11 +12,13 @@ bp_admin = Blueprint('admin', __name__,
 
 
 @bp_admin.route('/')
+@login_required
 def admin():
     return render_template('admin/admin.html')
 
 
 @bp_admin.route('/<brand>', methods=['GET', 'POST'])
+@login_required
 def add_new_model(brand):
     is_sent_ok = False
     message = None

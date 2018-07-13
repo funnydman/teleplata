@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block login %}
+    <div class="login">
+        <form method="POST" name="login">
+            <label for="username">Имя:</label>
+            <input type="text" name="username" id="username" required>
+
+            <label for="password">Пароль:</label>
+            <input type="password" name="password" id="password" required>
+            <div class="errors">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <ul class=flashes>
+                            {% for category, message in messages %}
+                                <li class="{{ category }}">{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <input type="submit" value="Отправить" class="button">
+        </form>
+
+    </div>
+{% endblock %}
