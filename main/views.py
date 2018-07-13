@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, g
 
+from main import db
 from .utils import get_class_by_tablename
 
 main = Blueprint('main', __name__)
@@ -8,8 +9,14 @@ main = Blueprint('main', __name__)
 @main.route('/', methods=['GET', 'POST'])
 @main.route('/<brand>', methods=['POST', 'GET'])
 def home(brand='samsung'):
-    page = request.args.get('page', 1)
     brand = get_class_by_tablename(brand)
+    if g.user and request.method == 'POST':
+        model_id_to_del = request.form['model-id-delete']
+        obj_to_del = brand.query.get(model_id_to_del)
+        if obj_to_del:
+            db.session.delete(obj_to_del)
+            db.session.commit()
+    page = request.args.get('page', 1)
     search_query = request.args.get('search')
     models = brand.query.paginate(
         page=int(page),
@@ -30,7 +37,6 @@ def home(brand='samsung'):
             page=int(page),
             per_page=3,
             error_out=False)
-        print(models)
     return render_template('home/home.html', models=models, brand=brand)
 
 
@@ -43,6 +49,7 @@ def page_not_found(error):
 def server_error(error):
     return render_template('500.html'), 500
 
-# @main.before_first_request
-# def before_first_request():
-#     db.create_all()
+
+@main.before_app_first_request
+def setup_application():
+    db.create_all()

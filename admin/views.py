@@ -42,4 +42,18 @@ def add_new_model(brand):
             message = 'Такая модель уже есть в базе данных'
     last_five_models = brand.query.order_by(brand.pub_date.desc()).limit(5).all()
     return render_template('admin/models/model-add.html', brand=brand,
-                           is_sent_ok=is_sent_ok, message=message, last_5_models=last_five_models)
+                           is_sent_ok=is_sent_ok, message=message, last_five_models=last_five_models)
+
+
+@bp_admin.route('/edit/<brand>/<model>', methods=['GET', 'POST'])
+@login_required
+def model_edit(brand, model):
+    brand = get_class_by_tablename(brand)
+    model_to_edit = brand.query.filter_by(model=model)
+    if request.method == 'POST':
+        # TODO add method to add data
+        model_edited = model_to_edit.update()
+        print(model_edited)
+        db.session.commit()
+        return
+    return render_template("admin/models/model-edit.html", model_to_edit=model_to_edit.first())

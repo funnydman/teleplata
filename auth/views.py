@@ -17,7 +17,7 @@ def login():
         if username and password:
             user = User.query.filter_by(username=username).first()
             if user is None:
-                error = 'Incorrect username.'
+                error = 'Incorrect username or user does not exist'
                 flash(error, 'error')
             elif not user.check_password(password):
                 error = 'Incorrect password.'
