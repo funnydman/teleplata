@@ -42,4 +42,4 @@ def add_new_model(brand):
             message = 'Такая модель уже есть в базе данных'
     last_five_models = brand.query.order_by(brand.pub_date.desc()).limit(5).all()
     return render_template('admin/models/model-add.html', brand=brand,
-                           is_sent_ok=is_sent_ok, message=message, last_5_models=last_five_models)
+                           is_sent_ok=is_sent_ok, message=message, last_five_models=last_five_models)
