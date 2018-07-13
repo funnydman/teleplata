@@ -17,18 +17,14 @@ STATIC_FOLDER = os.path.join(PROJECT_DIR, 'static')
 TEMPLATE_FOLDER = os.path.join(PROJECT_DIR, 'templates')
 
 
-def create_app():
-    app = Flask(__name__, instance_relative_config=True,
-                template_folder=TEMPLATE_FOLDER,
-                static_folder=STATIC_FOLDER)
-    app.config.from_pyfile('config.py', silent=False)
-    app.config['SQLALCHEMY_DATABASE_URI'] = URL(**app.config['DATABASE'])
+def load_models():
+    from . import models
 
-    db.init_app(app)
-    from .models import Samsung, Sony, Sharp, Shinco, Shivaki, Supra, Philips, \
-        Panasonic, Toshiba, Telefunken, Tomson, Horizont, Vityaz, Dell, Daevoo, \
-        Dynex, Grundic, Lg
 
+load_models()
+
+
+def init_views(app):
     from . import views
     app.register_blueprint(views.main)
 
@@ -37,11 +33,18 @@ def create_app():
 
     from auth import views
     app.register_blueprint(views.auth)
-    
+
+
+def create_app():
+    app = Flask(__name__, instance_relative_config=True,
+                template_folder=TEMPLATE_FOLDER,
+                static_folder=STATIC_FOLDER)
+    app.config.from_pyfile('config.py', silent=False)
+    app.config['SQLALCHEMY_DATABASE_URI'] = URL(**app.config['DATABASE'])
+
+    db.init_app(app)
+
+    init_views(app)
     app.wsgi_app = ProxyFix(app.wsgi_app)
 
     return app
-
-# @app.before_first_request
-# def setup():
-#     print("Hello")

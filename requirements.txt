@@ -5,3 +5,4 @@ python-dotenv==0.8.2
 psycopg2
 gunicorn
 fabric
+alembic
