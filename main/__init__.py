@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from flask import session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.engine.url import URL
 from werkzeug.contrib.fixers import ProxyFix
@@ -46,5 +47,10 @@ def create_app():
 
     init_views(app)
     app.wsgi_app = ProxyFix(app.wsgi_app)
+
+    @app.before_request
+    def make_session_permanent():
+        session.permanent = True
+        # app.permanent_session_lifetime = timedelta(minutes=5)
 
     return app
