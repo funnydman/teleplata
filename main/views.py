@@ -33,10 +33,16 @@ def home(brand='samsung'):
         print(models)
     return render_template('home/home.html', models=models, brand=brand)
 
-    @main.errorhandler(404)
-    def page_not_found(error):
-        return render_template('404.html'), 404
 
-    @main.errorhandler(500)
-    def server_error(error):
-        return render_template('500.html'), 500
+@main.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
+
+
+@main.errorhandler(500)
+def server_error(error):
+    return render_template('500.html'), 500
+
+# @main.before_first_request
+# def before_first_request():
+#     db.create_all()
