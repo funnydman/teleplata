@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request
 
+from main import db
 from .utils import get_class_by_tablename
 
 main = Blueprint('main', __name__)
@@ -43,6 +44,7 @@ def page_not_found(error):
 def server_error(error):
     return render_template('500.html'), 500
 
-# @main.before_first_request
-# def before_first_request():
-#     db.create_all()
+
+@main.before_app_first_request
+def setup_application():
+    db.create_all()
