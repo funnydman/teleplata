@@ -13,9 +13,9 @@ def home(brand='samsung'):
     if g.user and request.method == 'POST':
         model_id_to_del = request.form['model-id-delete']
         obj_to_del = brand.query.get(model_id_to_del)
-        db.session.delete(obj_to_del)
-        db.session.commit()
-        print(model_id_to_del)
+        if obj_to_del:
+            db.session.delete(obj_to_del)
+            db.session.commit()
     page = request.args.get('page', 1)
     search_query = request.args.get('search')
     models = brand.query.paginate(
@@ -37,7 +37,6 @@ def home(brand='samsung'):
             page=int(page),
             per_page=3,
             error_out=False)
-        print(models)
     return render_template('home/home.html', models=models, brand=brand)
 
 

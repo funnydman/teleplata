@@ -1,0 +1,38 @@
+{% extends 'admin/admin.html' %}
+{% block model_edit %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="model-add">
+                <h2>Редактировать новую модель</h2>
+                <form method="POST">
+                    {% if model_to_edit %}
+                        <label for="model">Модель:</label>
+                        <input type="text" name="model" id="model" value="{{ model_to_edit.model }}" readonly>
+                        <label for="power">Power:</label>
+                        <input type="text" name="power" id="power" value="{{ model_to_edit.power }}">
+
+                        <label for="t_con">t-con:</label>
+                        <input type="text" name="t_con" id="t_con" value="{{ model_to_edit.t_con }}">
+
+                        <label for="x_main">x-main:</label>
+                        <input type="text" name="x_main" id="x_main" value="{{ model_to_edit.x_main }}">
+
+                        <label for="y_main">y-main:</label>
+                        <input type="text" name="y_main" id="y_main" value="{{ model_to_edit.y_main }}">
+
+                        <label for="logic">logic:</label>
+                        <input type="text" name="logic" id="logic" value="{{ model_to_edit.logic }}">
+
+                        <label for="invertor">invertor:</label>
+                        <input type="text" name="invertor" id="invertor" value="{{ model_to_edit.invertor }}">
+
+                        <label for="y_scan">y_scan:</label>
+                        <input type="text" name="y_scan" id="y_scan" value="{{ model_to_edit.y_scan }}">
+
+
+                        <input class="button" type="submit" value="Обновить">
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+{% endblock %}
