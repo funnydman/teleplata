@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, g
 
 from main import db
 from .utils import get_class_by_tablename
@@ -9,8 +9,14 @@ main = Blueprint('main', __name__)
 @main.route('/', methods=['GET', 'POST'])
 @main.route('/<brand>', methods=['POST', 'GET'])
 def home(brand='samsung'):
-    page = request.args.get('page', 1)
     brand = get_class_by_tablename(brand)
+    if g.user and request.method == 'POST':
+        model_id_to_del = request.form['model-id-delete']
+        obj_to_del = brand.query.get(model_id_to_del)
+        db.session.delete(obj_to_del)
+        db.session.commit()
+        print(model_id_to_del)
+    page = request.args.get('page', 1)
     search_query = request.args.get('search')
     models = brand.query.paginate(
         page=int(page),
