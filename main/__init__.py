@@ -44,7 +44,7 @@ def create_app():
     app = Flask(__name__, instance_relative_config=True,
                 template_folder=TEMPLATE_FOLDER,
                 static_folder=STATIC_FOLDER)
-    app.config.from_pyfile('config.py')
+    app.config.from_pyfile('config.py', silent=True)
     app.config['SQLALCHEMY_DATABASE_URI'] = URL(**app.config['DATABASE'])
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
