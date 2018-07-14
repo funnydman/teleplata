@@ -1,5 +1,6 @@
 import os
 
+import click
 from flask import Flask
 from flask import session
 from flask_sqlalchemy import SQLAlchemy
@@ -44,7 +45,7 @@ def create_app():
     app = Flask(__name__, instance_relative_config=True,
                 template_folder=TEMPLATE_FOLDER,
                 static_folder=STATIC_FOLDER)
-    app.config.from_pyfile('test_config.py', silent=True)
+    app.config.from_pyfile('configs/test_config.py', silent=True)
     app.config['SQLALCHEMY_DATABASE_URI'] = URL(**app.config['DATABASE'])
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -57,5 +58,18 @@ def create_app():
     def make_session_permanent():
         session.permanent = True
         # app.permanent_session_lifetime = timedelta(minutes=5)
+
+    @app.cli.command()
+    @click.option('--username')
+    @click.option('--password')
+    def create_user(username, password):
+        if username and password:
+            from auth.models import User
+            user = User(username=username, password=password)
+            db.session.add(user)
+            db.session.commit()
+            click.echo("User created")
+        else:
+            click.echo("Enter username and password")
 
     return app

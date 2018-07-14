@@ -1,7 +1,7 @@
 DEBUG = True
 TESTING = False
 
-SECRET_KEY = 'prod'
+SECRET_KEY = 'test'
 
 DATABASE_USER = 'postplata'
 DATABASE_PASSWORD = 'FUNNYDMAN'
