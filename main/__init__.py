@@ -36,14 +36,19 @@ def init_views(app):
     app.register_blueprint(views.auth)
 
 
+def init_db(app):
+    db.init_app(app)
+
+
 def create_app():
     app = Flask(__name__, instance_relative_config=True,
                 template_folder=TEMPLATE_FOLDER,
                 static_folder=STATIC_FOLDER)
-    app.config.from_pyfile('config.py', silent=False)
+    app.config.from_pyfile('config.py')
     app.config['SQLALCHEMY_DATABASE_URI'] = URL(**app.config['DATABASE'])
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    db.init_app(app)
+    init_db(app)
 
     init_views(app)
     app.wsgi_app = ProxyFix(app.wsgi_app)
