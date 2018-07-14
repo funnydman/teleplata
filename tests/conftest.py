@@ -16,6 +16,7 @@ TEST_DATABASE_URI = 'sqlite:///' + TESTDB_PATH
 @pytest.fixture(scope='session')
 def app(request):
     app = create_app()
+    app.config.from_pyfile('test_config.py')
     app.config.from_mapping(
         SQLALCHEMY_DATABASE_URI=TEST_DATABASE_URI,
         DEBUG=True,
