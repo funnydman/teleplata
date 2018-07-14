@@ -110,3 +110,4 @@ venv.bak/
 instance/config.py
 instance/test.sql
 static/node_modules/
+pg_backup
