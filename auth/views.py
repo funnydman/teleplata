@@ -25,7 +25,7 @@ def login():
             if error is None:
                 session.clear()
                 session['user_id'] = user.id
-                flash('You were successfully logged in', 'success')
+                flash('You were logged in', 'success')
                 return redirect(url_for('admin.admin'))
 
     return render_template("admin/login.html")
@@ -34,6 +34,7 @@ def login():
 @auth.route('/logout')
 def logout():
     session.clear()
+    flash('You were logged out', 'success')
     return redirect(url_for('main.home'))
 
 

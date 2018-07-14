@@ -1,7 +1,10 @@
 import os
 
 import pytest
+from alembic.command import upgrade
+from alembic.config import Config
 
+from main import PROJECT_DIR
 from main import create_app, db as _db
 
 TEST_FOLDER_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -11,17 +14,24 @@ TESTDB = 'teleplata_test.db'
 TESTDB_PATH = os.path.join(TEST_FOLDER_PATH, TESTDB)
 
 TEST_DATABASE_URI = 'sqlite:///' + TESTDB_PATH
+ALEMBIC_CONFIG = os.path.join(PROJECT_DIR, 'alembic.ini')
+
+
+def apply_migrations():
+    """Applies all alembic migrations."""
+    config = Config(ALEMBIC_CONFIG)
+    upgrade(config, 'head')
 
 
 @pytest.fixture(scope='session')
 def app(request):
     app = create_app()
-    app.config.from_pyfile('test_config.py')
     app.config.from_mapping(
         SQLALCHEMY_DATABASE_URI=TEST_DATABASE_URI,
         DEBUG=True,
-        TESTING=True
-
+        TESTING=True,
+        USERNAME="TELEPLATA",
+        PASSWORD="TELEPLATA"
     )
     ctx = app.app_context()
     ctx.push()
@@ -73,3 +83,11 @@ def session(db, request):
 @pytest.fixture
 def client(app):
     return app.test_client()
+
+
+@pytest.fixture
+def auth_client(client):
+    return client.post(
+        '/auth/login',
+        data={'username': "TELEPLATA", 'password': "TELEPLATA"}
+    )
