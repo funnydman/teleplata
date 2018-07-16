@@ -1,11 +1,14 @@
-DEBUG = False
-TESTING = False
+from sqlalchemy.engine.url import URL
 
-SECRET_KEY = 'prod'
+SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-DATABASE_USER = ''
-DATABASE_PASSWORD = ''
-DATABASE_NAME = ''
+DEBUG = True
+TESTING = True
+SECRET_KEY = 'dev'
+
+DATABASE_USER = 'postplata'
+DATABASE_PASSWORD = 'FUNNYDMAN'
+DATABASE_NAME = 'postplata'
 DATABASE_HOST = 'localhost'
 DATABASE_POST = 5432
 
@@ -15,3 +18,5 @@ DATABASE = {'drivername': 'postgres',
             'password': DATABASE_PASSWORD,
             'host': DATABASE_HOST,
             'port': DATABASE_POST}
+
+SQLALCHEMY_DATABASE_URI = URL(**DATABASE)

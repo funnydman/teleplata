@@ -1,11 +1,12 @@
-DEBUG = True
+DEBUG = False
 TESTING = False
 
-SECRET_KEY = 'test'
+# something very secure
+SECRET_KEY = 'prod'
 
-DATABASE_USER = 'postplata'
-DATABASE_PASSWORD = 'FUNNYDMAN'
-DATABASE_NAME = 'postplata'
+DATABASE_USER = ''
+DATABASE_PASSWORD = ''
+DATABASE_NAME = ''
 DATABASE_HOST = 'localhost'
 DATABASE_POST = 5432
 

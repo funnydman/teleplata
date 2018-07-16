@@ -15,8 +15,8 @@ def test_add_new_entry(session):
 
 
 def test_add_new_user(app, session):
-    new_user = User(username=app.config['USERNAME'], password=app.config['PASSWORD'])
+    new_user = User(username=app.config['TEST_USERNAME'], password=app.config['TEST_PASSWORD'])
     session.add(new_user)
     session.commit()
-    user_obj = User.query.filter_by(username=app.config['USERNAME']).first()
+    user_obj = User.query.filter_by(username=app.config['TEST_USERNAME']).first()
     assert user_obj is not None

@@ -4,7 +4,6 @@ import click
 from flask import Flask
 from flask import session
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.engine.url import URL
 from werkzeug.contrib.fixers import ProxyFix
 
 db = SQLAlchemy()
@@ -45,9 +44,8 @@ def create_app():
     app = Flask(__name__, instance_relative_config=True,
                 template_folder=TEMPLATE_FOLDER,
                 static_folder=STATIC_FOLDER)
-    app.config.from_pyfile('configs/test_config.py', silent=True)
-    app.config['SQLALCHEMY_DATABASE_URI'] = URL(**app.config['DATABASE'])
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config.from_pyfile('configs/dev.py')
+    app.config.from_pyfile('configs/prod.py', silent=True)
 
     init_db(app)
 
@@ -60,15 +58,15 @@ def create_app():
         # app.permanent_session_lifetime = timedelta(minutes=5)
 
     @app.cli.command()
-    @click.option('--username')
-    @click.option('--password')
+    @click.option('--username', prompt=True, help='username')
+    @click.password_option()
     def create_user(username, password):
         if username and password:
             from auth.models import User
             user = User(username=username, password=password)
             db.session.add(user)
             db.session.commit()
-            click.echo("User created")
+            click.echo(f"User {username} created")
         else:
             click.echo("Enter username and password")
 
