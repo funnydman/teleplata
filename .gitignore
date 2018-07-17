@@ -107,9 +107,8 @@ venv.bak/
 .idea
 
 # project
-instance/config.py
-instance/prod.py
-instance/test.sql
+instance/configs/prod.py
+instance/configs/test.sql
 static/node_modules/
 **/node_modules/
 pg_backup
