@@ -1,7 +1,7 @@
 from fabric import Connection, Config
 
 try:
-    from instance.config import DATABASE
+    from instance.configs.prod import DATABASE
 except ImportError:
     raise ImportError("Can't find instance config. Did you import it?")
 
@@ -58,7 +58,7 @@ def create_database():
 
 
 def configure_server():
-    conn.put('instance/config.py', f'{REPO_NAME}/instance/config.py')
+    conn.put('instance/configs/prod.py', f'{REPO_NAME}/instance/configs/prod.py')
     conn.put('instance/nginx.conf', '/etc/nginx/sites-available/tele.conf')
     conn.sudo('ln -s /etc/nginx/sites-available/tele.conf /etc/nginx/sites-enabled/', warn=True)
     conn.put('instance/teleplata.conf', '/etc/supervisor/conf.d/teleplata.conf')
@@ -72,6 +72,10 @@ def configure_project():
         if conn.run('test -d venv', warn=True).failed:
             conn.run('virtualenv --python=$(which python3) venv')
             conn.run('source venv/bin/activate && pip install -r requirements.txt')
+
+
+def run_tox():
+    conn.run("tox")
 
 
 def run_application():
