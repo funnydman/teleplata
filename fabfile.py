@@ -1,13 +1,14 @@
-from fabric import Connection, task
+import logging
+
+from fabric import task
 
 try:
     from instance.configs.prod import DATABASE
 except ImportError:
     raise ImportError("Can't find instance config. Did you import it?")
 
-REMOTE_HOST = 'tele'
-REMOTE_USER = ''
-REMOTE_PASS = ''
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 database = DATABASE['database']
 username = DATABASE['username']
@@ -15,12 +16,6 @@ password = DATABASE['password']
 
 PACKAGES_TO_INSTALL = ("build-essential", "postgresql", "postgresql-contrib", "python3-pip", "python-dev", "virtualenv",
                        "nginx", "supervisor")
-# TODO do we need this configs when working with tasks?
-# use this if you need to type root password
-# sudo_pass = getpass.getpass("What's your sudo password?")
-# config = Config(overrides={'sudo': {'password': REMOTE_PASS}})
-# conn = Connection(host=REMOTE_HOST, config=config)
-conn = Connection(host=REMOTE_HOST)
 
 REPO_URL = 'https://github.com/FUNNYDMAN/teleplata.git'
 
@@ -31,10 +26,13 @@ REPO_NAME = 'teleplata'
 @task
 def pull_repo(conn):
     """Clone repository if doesn't exist else pull changes."""
+
     if conn.run(f'test -d {REPO_NAME}', warn=True).failed:
+        logger.info("Start cloning repository...")
         conn.run(f"git clone {REPO_URL}")
     else:
         with conn.cd(f"{REPO_NAME}"):
+            logger.info("Pulling repository...")
             conn.run("git pull")
 
 
