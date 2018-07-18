@@ -1,4 +1,4 @@
-from fabric import Connection, Config
+from fabric import Connection
 
 try:
     from instance.configs.prod import DATABASE
@@ -16,9 +16,11 @@ password = DATABASE['password']
 PACKAGES_TO_INSTALL = ("build-essential", "postgresql", "postgresql-contrib", "python3-pip", "python-dev", "virtualenv",
                        "nginx", "supervisor")
 
+# use this if you need to type root password
 # sudo_pass = getpass.getpass("What's your sudo password?")
-config = Config(overrides={'sudo': {'password': REMOTE_PASS}})
-conn = Connection(host=REMOTE_HOST, config=config)
+# config = Config(overrides={'sudo': {'password': REMOTE_PASS}})
+# conn = Connection(host=REMOTE_HOST, config=config)
+conn = Connection(host=REMOTE_HOST)
 
 REPO_URL = 'https://github.com/FUNNYDMAN/teleplata.git'
 
