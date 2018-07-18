@@ -3,7 +3,7 @@ from sqlalchemy.engine.url import URL
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 DEBUG = False
-TESTING = True
+TESTING = False
 SECRET_KEY = 'prod'
 
 DATABASE_USER = 'postplata'

@@ -66,7 +66,7 @@ def create_app():
             user = User(username=username, password=password)
             db.session.add(user)
             db.session.commit()
-            click.echo(f"User {username} created")
+            # click.echo(f'User {username} created')
         else:
             click.echo("Enter username and password")
 

@@ -1,4 +1,4 @@
-from fabric import Connection
+from fabric import Connection, task
 
 try:
     from instance.configs.prod import DATABASE
@@ -15,7 +15,7 @@ password = DATABASE['password']
 
 PACKAGES_TO_INSTALL = ("build-essential", "postgresql", "postgresql-contrib", "python3-pip", "python-dev", "virtualenv",
                        "nginx", "supervisor")
-
+# TODO do we need this configs when working with tasks?
 # use this if you need to type root password
 # sudo_pass = getpass.getpass("What's your sudo password?")
 # config = Config(overrides={'sudo': {'password': REMOTE_PASS}})
@@ -28,7 +28,9 @@ REPO_URL = 'https://github.com/FUNNYDMAN/teleplata.git'
 REPO_NAME = 'teleplata'
 
 
-def pull_repository():
+@task
+def pull_repo(conn):
+    """Clone repository if doesn't exist else pull changes."""
     if conn.run(f'test -d {REPO_NAME}', warn=True).failed:
         conn.run(f"git clone {REPO_URL}")
     else:
@@ -36,21 +38,28 @@ def pull_repository():
             conn.run("git pull")
 
 
-def install_packages():
+# TODO fix problem with sudo mode. Tasks doesn't work with conn.sudo
+# Problem: a task trying to get root password from a console
+@task
+def install_packages(conn):
+    """Install necessary packages."""
     conn.sudo("apt-get update")
     conn.sudo(f"apt-get install -y {' '.join(PACKAGES_TO_INSTALL)}")
     conn.sudo("curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -")
-    conn.sudo("sudo apt-get install -y nodejs")
+    conn.sudo("apt-get install -y nodejs")
 
 
-def build_staticfiles():
+@task(pull_repo, install_packages)
+def build_statics(conn):
+    """Build staticfiles."""
     with conn.cd(f'{REPO_NAME}/static'):
-        # if conn.run("test -d node_modules", warn=True).failed:
-        conn.run("npm install && npm run build")
-        # conn.run("npm run build")
+        if conn.run("test -d node_modules", warn=True).failed:
+            conn.run("npm install && npm run build")
 
 
-def create_database():
+@task
+def create_database(conn):
+    """Create and configure database."""
     if conn.sudo(f'psql -c "CREATE DATABASE {database};" -U postgres', warn=True).ok:
         conn.sudo(
             f"""psql -c "CREATE USER {username} WITH password \'{password}\'" -U postgres""")
@@ -59,7 +68,9 @@ def create_database():
         conn.sudo(f'psql -c "ALTER USER {username} CREATEDB;" -U postgres')
 
 
-def configure_server():
+@task(pull_repo)
+def configure_server(conn):
+    """Configure the server."""
     conn.put('instance/configs/prod.py', f'{REPO_NAME}/instance/configs/prod.py')
     conn.put('instance/nginx.conf', '/etc/nginx/sites-available/tele.conf')
     conn.sudo('ln -s /etc/nginx/sites-available/tele.conf /etc/nginx/sites-enabled/', warn=True)
@@ -68,31 +79,22 @@ def configure_server():
     conn.sudo('service nginx reload')
 
 
-def configure_project():
+@task(pull_repo)
+def create_env(conn):
+    """Create and configure virtualenv."""
     with conn.cd(f'{REPO_NAME}'):
-        # create and configure virtualenv
         if conn.run('test -d venv', warn=True).failed:
             conn.run('virtualenv --python=$(which python3) venv')
             conn.run('source venv/bin/activate && pip install -r requirements.txt')
 
 
-def run_tox():
-    conn.run("tox")
-
-
-def run_application():
+@task(pull_repo, install_packages, create_env, configure_server)
+def run_app(conn):
+    """Run application."""
     with conn.cd(f'{REPO_NAME}'):
         conn.run('source venv/bin/activate && gunicorn main:"create_app()"')
 
 
-def main():
-    pull_repository()
-    install_packages()
-    build_staticfiles()
-    create_database()
-    configure_server()
-    configure_project()
-    run_application()
-
-
-main()
+@task(pull_repo, install_packages, build_statics, create_database, configure_server, create_env, run_app)
+def build(conn):
+    conn.run("Configured")
