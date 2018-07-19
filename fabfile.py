@@ -2,13 +2,18 @@ import logging
 
 from fabric import task
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+handler = logging.FileHandler('fabfile.log')
+handler.setLevel(logging.INFO)
+
+logger.addHandler(handler)
 try:
     from instance.configs.prod import DATABASE
 except ImportError:
+    logger.error('Failed to open file', exc_info=True)
     raise ImportError("Can't find instance config. Did you import it?")
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 database = DATABASE['database']
 username = DATABASE['username']
