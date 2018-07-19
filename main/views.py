@@ -16,7 +16,7 @@ def home(brand='samsung'):
         if obj_to_del:
             db.session.delete(obj_to_del)
             db.session.commit()
-    page = request.args.get('page', 1)
+    page = request.args.get('page', 1, type=int)
     search_query = request.args.get('search')
     models = brand.query.paginate(
         page=int(page),
@@ -24,16 +24,21 @@ def home(brand='samsung'):
         error_out=False)
     # TODO: add full-text search
     if search_query:
-        models = brand.query.filter(
-            brand.model.contains(search_query) |
-            brand.power.contains(search_query) |
-            brand.t_con.contains(search_query) |
-            brand.x_main.contains(search_query) |
-            brand.y_main.contains(search_query) |
-            brand.logic.contains(search_query) |
-            brand.invertor.contains(search_query) |
-            brand.y_scan.contains(search_query)
-        ).paginate(
+        models, total = brand.search(search_query, page, 3)
+        # models = brand.query.filter(
+        #     brand.model.contains(search_query) |
+        #     brand.power.contains(search_query) |
+        #     brand.t_con.contains(search_query) |
+        #     brand.x_main.contains(search_query) |
+        #     brand.y_main.contains(search_query) |
+        #     brand.logic.contains(search_query) |
+        #     brand.invertor.contains(search_query) |
+        #     brand.y_scan.contains(search_query)
+        # ).paginate(
+        #     page=int(page),
+        #     per_page=3,
+        #     error_out=False)
+        models = models.paginate(
             page=int(page),
             per_page=3,
             error_out=False)

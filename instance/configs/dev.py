@@ -6,6 +6,8 @@ DEBUG = True
 TESTING = True
 SECRET_KEY = 'dev'
 
+ELASTICSEARCH_URL = 'http://localhost:9200'
+
 DATABASE_USER = 'postplata'
 DATABASE_PASSWORD = 'FUNNYDMAN'
 DATABASE_NAME = 'postplata'

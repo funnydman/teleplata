@@ -1,6 +1,7 @@
 import os
 
 import click
+from elasticsearch import Elasticsearch
 from flask import Flask
 from flask import session
 from flask_sqlalchemy import SQLAlchemy
@@ -46,7 +47,7 @@ def create_app():
                 static_folder=STATIC_FOLDER)
     app.config.from_pyfile('configs/dev.py')
     app.config.from_pyfile('configs/prod.py', silent=True)
-
+    app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) or None
     init_db(app)
 
     init_views(app)
