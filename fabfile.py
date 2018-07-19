@@ -2,6 +2,7 @@ import logging
 
 from fabric import task
 
+# logger configs
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -9,6 +10,8 @@ handler = logging.FileHandler('fabfile.log')
 handler.setLevel(logging.INFO)
 
 logger.addHandler(handler)
+# end logger configs
+
 try:
     from instance.configs.prod import DATABASE
 except ImportError:
@@ -46,15 +49,16 @@ def pull_repo(conn):
 @task
 def install_packages(conn):
     """Install necessary packages."""
-    conn.sudo("apt-get update")
-    conn.sudo(f"apt-get install -y {' '.join(PACKAGES_TO_INSTALL)}")
-    conn.sudo("curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -")
-    conn.sudo("apt-get install -y nodejs")
+    conn.run("sudo apt-get update")
+    conn.run(f"sudo apt-get install -y {' '.join(PACKAGES_TO_INSTALL)}")
+    conn.run("sudo curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -")
+    conn.run("sudo apt-get install -y nodejs")
 
 
 @task(pull_repo, install_packages)
 def build_statics(conn):
     """Build staticfiles."""
+    logger.info("Start building staticfiles...")
     with conn.cd(f'{REPO_NAME}/static'):
         if conn.run("test -d node_modules", warn=True).failed:
             conn.run("npm install && npm run build")
@@ -98,6 +102,7 @@ def run_app(conn):
         conn.run('source venv/bin/activate && gunicorn main:"create_app()"')
 
 
+# TODO command 'fab -H <host> build' doesn't work with server. Why?
 @task(pull_repo, install_packages, build_statics, create_database, configure_server, create_env, run_app)
 def build(conn):
     conn.run("Configured")
