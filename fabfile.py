@@ -22,6 +22,7 @@ database = DATABASE['database']
 username = DATABASE['username']
 password = DATABASE['password']
 
+# TODO need to install wkhtmltopdf with patched qt
 PACKAGES_TO_INSTALL = ("build-essential", "postgresql", "postgresql-contrib", "python3-pip", "python-dev", "virtualenv",
                        "nginx", "supervisor", "wkhtmltopdf")
 

@@ -2,6 +2,13 @@ from auth.models import User
 from main.models import Samsung
 
 
+# def test_load_data_to_db(app, db):
+#     with open(os.path.join(app.path_to_tests, 'test.sql')) as f:
+#         db.engine.execute(f.read())
+#     test_model = Samsung.query.filter_by(model='test').first()
+#     assert test_model is not None
+
+
 def test_restore_backup():
     pass
 

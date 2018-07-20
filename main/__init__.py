@@ -48,6 +48,7 @@ def create_app():
     app.config.from_pyfile('configs/dev.py')
     app.config.from_pyfile('configs/prod.py', silent=True)
     app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) or None
+    app.path_to_tests = os.path.join(PROJECT_DIR, 'tests')
     init_db(app)
 
     init_views(app)

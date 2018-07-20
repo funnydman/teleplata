@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 import pdfkit
 from flask import Blueprint, render_template, request, g, send_from_directory
@@ -19,16 +20,23 @@ def get_pdf_report():
         if not models_by_brand_dict.get(brand):
             models_by_brand_dict.update({brand: models})
     # TODO option footer-right doesn't work. Why?
+    # TODO fix problem with page break
     options = {
         'footer-right': '[page]'
     }
+    # TODO should we add time to datetime string?
+    current_date = datetime.utcnow().strftime("%Y_%m_%d")
+    filename = 'report-' + current_date + '.pdf'
     template = render_template('report/report.html', models=models_by_brand_dict)
-    pdfkit.from_string(template, 'templates/report/report.pdf', options=options)
+    pdfkit.from_string(template, f'templates/report/{filename}', options=options)
+
+    return filename
 
 
 @main.route('/report/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
     # uploads = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
+    filename = get_pdf_report()
     path_to_file = os.path.join(current_app.template_folder, 'report')
     return send_from_directory(directory=path_to_file, filename=filename)
 
