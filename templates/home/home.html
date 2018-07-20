@@ -172,7 +172,8 @@
         {% endif %}
         <div class="report">
             <div class="row">
-                <a href="../report/report.html" class="button download" download>Скачать каталог</a>
+                <a href="{{ url_for('main.download', filename='report.pdf') }}" class="button download" download>Скачать
+                    каталог</a>
             </div>
         </div>
     </div>

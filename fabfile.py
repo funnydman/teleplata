@@ -23,7 +23,7 @@ username = DATABASE['username']
 password = DATABASE['password']
 
 PACKAGES_TO_INSTALL = ("build-essential", "postgresql", "postgresql-contrib", "python3-pip", "python-dev", "virtualenv",
-                       "nginx", "supervisor")
+                       "nginx", "supervisor", "wkhtmltopdf")
 
 REPO_URL = 'https://github.com/FUNNYDMAN/teleplata.git'
 

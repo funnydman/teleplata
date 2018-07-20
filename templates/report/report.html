@@ -7,6 +7,68 @@
     <title>Report</title>
 </head>
 <body>
-<h1>Test</h1>
+<style>
+    .report-info h1 {
+        font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+    }
+
+    #report-table {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    #report-table td, #report-table th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    #report-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #report-table tr:hover {
+        background-color: #ddd;
+    }
+
+    #report-table th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #4CAF50;
+        color: #ffffff;
+    }
+</style>
+{% if models %}
+    <div class="report-info">
+        {% for brand in models.keys() %}
+            <h1>{{ brand }}</h1>
+            <table id="report-table">
+                <tr>
+                    <th>Модель</th>
+                    <th>Power</th>
+                    <th>t-con</th>
+                    <th>x-main</th>
+                    <th>y-main</th>
+                    <th>logic</th>
+                    <th>invertor</th>
+                    <th>y-scan</th>
+                </tr>
+                {% for item in models[brand] %}
+                    <tr>
+                        <td>{{ item.model }}</td>
+                        <td>{{ item.power }}</td>
+                        <td>{{ item.t_con }}</td>
+                        <td>{{ item.x_main }}</td>
+                        <td>{{ item.y_main }}</td>
+                        <td>{{ item.logic }}</td>
+                        <td>{{ item.invertor }}</td>
+                        <td>{{ item.y_scan }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endfor %}
+    </div>
+{% endif %}
 </body>
 </html>

@@ -111,4 +111,5 @@ instance/configs/prod.py
 instance/configs/test.sql
 static/node_modules/
 **/node_modules/
+templates/report/*.pdf
 pg_backup

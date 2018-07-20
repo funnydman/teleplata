@@ -1,13 +1,32 @@
-from flask import Blueprint, render_template, request, g
+import os
+
+import pdfkit
+from flask import Blueprint, render_template, request, g, send_from_directory
+from flask import current_app
 
 from main import db
 from .utils import get_class_by_tablename
 
 main = Blueprint('main', __name__)
 
+brands_list = ['samsung', 'lg']
+
 
 def get_pdf_report():
-    pass
+    models_by_brand_dict = {}
+    for brand in brands_list:
+        models = get_class_by_tablename(brand).query.all()
+        if not models_by_brand_dict.get(brand):
+            models_by_brand_dict.update({brand: models})
+    template = render_template('report/report.html', models=models_by_brand_dict)
+    pdfkit.from_string(template, 'templates/report/report.pdf')
+
+
+@main.route('/report/<path:filename>', methods=['GET', 'POST'])
+def download(filename):
+    # uploads = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
+    path_to_file = os.path.join(current_app.template_folder, 'report')
+    return send_from_directory(directory=path_to_file, filename=filename)
 
 
 @main.route('/', methods=['GET', 'POST'])
