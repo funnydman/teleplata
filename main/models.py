@@ -35,6 +35,7 @@ class SearchableMixin(object):
         for obj in session._changes['delete']:
             if isinstance(obj, SearchableMixin):
                 remove_from_index(obj.__tablename__, obj)
+                philips
         session._changes = None
 
     @classmethod
@@ -49,8 +50,7 @@ db.event.listen(db.session, 'after_commit', SearchableMixin.after_commit)
 
 class Brand(SearchableMixin, db.Model):
     __abstract__ = True
-    __searchable__ = ['model', 'power', 't_con', 'x_main', 'y_main', 'logic',
-                      'invertor', 'y_scan']
+    __searchable__ = ['model', 'power', 't_con', 'x_main', 'y_main', 'logic', 'invertor', 'y_scan']
     id = db.Column(db.Integer, primary_key=True, unique=True)
     model = db.Column(db.String(120), unique=True, nullable=False)
     power = db.Column(db.String(120))

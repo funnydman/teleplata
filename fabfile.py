@@ -55,6 +55,15 @@ def install_packages(conn):
     conn.run("sudo apt-get install -y nodejs")
 
 
+@task
+def install_deps_for_elasticsearch(conn):
+    conn.run("sudo apt-get update")
+    conn.run("sudo apt-get install -y default-jre default-jdk")
+    conn.run("sudo add-apt-repository ppa:webupd8team/java")
+    conn.run("sudo apt-get update")
+    conn.run("sudo apt-get install -y oracle-java8-installer")
+
+
 @task(pull_repo, install_packages)
 def build_statics(conn):
     """Build staticfiles."""
