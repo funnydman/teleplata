@@ -62,6 +62,7 @@ def create_app():
     @click.option('--username', prompt=True, help='username')
     @click.password_option()
     def create_user(username, password):
+        """Create super user."""
         if username and password:
             from auth.models import User
             user = User(username=username, password=password)
@@ -70,5 +71,11 @@ def create_app():
             # click.echo(f'User {username} created')
         else:
             click.echo("Enter username and password")
+
+    @app.cli.command()
+    def get_pdf_report():
+        """Make pdf report."""
+        from .views import get_pdf_report
+        get_pdf_report()
 
     return app
