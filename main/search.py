@@ -22,7 +22,7 @@ def query_index(index, query, page, per_page):
     search = current_app.elasticsearch.search(
         index=index, doc_type=index,
         # TODO why 'fields': ['*'] doesn't work?
-        body={'query': {'multi_match': {'query': query, 'fields': ['model']}},
+        body={'query': {'multi_match': {'query': query, 'fields': ['_all']}},
               'from': (page - 1) * per_page, 'size': per_page})
     ids = [int(hit['_id']) for hit in search['hits']['hits']]
     return ids, search['hits']['total']

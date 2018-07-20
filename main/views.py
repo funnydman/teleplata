@@ -6,6 +6,10 @@ from .utils import get_class_by_tablename
 main = Blueprint('main', __name__)
 
 
+def get_pdf_report():
+    pass
+
+
 @main.route('/', methods=['GET', 'POST'])
 @main.route('/<brand>', methods=['POST', 'GET'])
 def home(brand='samsung'):
@@ -22,13 +26,8 @@ def home(brand='samsung'):
         page=int(page),
         per_page=15,
         error_out=False)
-    # TODO: add full-text search
     if search_query:
         models, total = brand.search(search_query, page, 3)
-        test = [*db.metadata.tables.keys()]
-        # we don't index user model
-        test.remove('user')
-        print(test)
         models = models.paginate(
             page=int(page),
             per_page=3,

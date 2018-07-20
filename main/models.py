@@ -35,7 +35,6 @@ class SearchableMixin(object):
         for obj in session._changes['delete']:
             if isinstance(obj, SearchableMixin):
                 remove_from_index(obj.__tablename__, obj)
-                philips
         session._changes = None
 
     @classmethod
