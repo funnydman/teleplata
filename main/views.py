@@ -9,7 +9,7 @@ from .utils import get_class_by_tablename
 
 main = Blueprint('main', __name__)
 
-brands_list = ['samsung', 'lg']
+brands_list = ['samsung', 'lg', 'tomson']
 
 
 def get_pdf_report():

@@ -4,7 +4,7 @@ SQLAlchemy==1.2.10
 python-dotenv==0.8.2
 psycopg2==2.7.5
 gunicorn==19.9.0
-fabric==2.2.0
+fabric==2.2.1
 alembic==1.0.0
 tox==3.1.2
 flake8==3.5.0
