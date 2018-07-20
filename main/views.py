@@ -18,8 +18,12 @@ def get_pdf_report():
         models = get_class_by_tablename(brand).query.all()
         if not models_by_brand_dict.get(brand):
             models_by_brand_dict.update({brand: models})
+    # TODO option footer-right doesn't work. Why?
+    options = {
+        'footer-right': '[page]'
+    }
     template = render_template('report/report.html', models=models_by_brand_dict)
-    pdfkit.from_string(template, 'templates/report/report.pdf')
+    pdfkit.from_string(template, 'templates/report/report.pdf', options=options)
 
 
 @main.route('/report/<path:filename>', methods=['GET', 'POST'])
