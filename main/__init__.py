@@ -77,4 +77,8 @@ def create_app():
     def make_session_permanent():
         session.permanent = True
 
+    @app.shell_context_processor
+    def shell_context():
+        return {'db': db}
+
     return app
