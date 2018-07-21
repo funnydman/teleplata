@@ -1,7 +1,7 @@
 import os
 
 from elasticsearch import Elasticsearch
-from flask import Flask, session
+from flask import Flask, session, render_template
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.contrib.fixers import ProxyFix
 
@@ -64,5 +64,13 @@ def create_app():
     app.cli.add_command(cli.create_user)
     app.cli.add_command(cli.get_pdf_report)
     app.cli.add_command(cli.drop_db)
+
+    @app.errorhandler(404)
+    def page_not_found(error):
+        return render_template('404.html'), 404
+
+    @app.errorhandler(500)
+    def server_error(error):
+        return render_template('500.html'), 500
 
     return app
