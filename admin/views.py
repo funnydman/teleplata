@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, request, flash
 from auth.views import login_required
 from main import db, TEMPLATE_FOLDER, STATIC_FOLDER
 from main.utils import get_class_by_tablename
+from .utils import get_form_data
 
 bp_admin = Blueprint('admin', __name__,
                      url_prefix='/admin',
@@ -14,15 +15,6 @@ bp_admin = Blueprint('admin', __name__,
 @login_required
 def admin():
     return render_template('admin/admin.html')
-
-
-def get_form_data(request):
-    result_dict = {}
-    table_fields = ('model', 'power', 't_con', 'x_main',
-                    'y_main', 'logic', 'invertor', 'y_scan')
-    for field in table_fields:
-        result_dict.update({field: request.form[field]})
-    return result_dict
 
 
 @bp_admin.route('/<brand>', methods=['GET', 'POST'])
