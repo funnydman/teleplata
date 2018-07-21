@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from main import db
+from main.common import MODEL_FIELDS
 from main.search import add_to_index, remove_from_index, query_index
 
 
@@ -61,16 +62,19 @@ class Image(db.Model):
 
 class Brand(SearchableMixin, db.Model):
     __abstract__ = True
-    __searchable__ = ['model', 'power', 't_con', 'x_main', 'y_main', 'logic', 'invertor', 'y_scan']
+    __searchable__ = MODEL_FIELDS
     id = db.Column(db.Integer, primary_key=True, unique=True)
-    model = db.Column(db.String(120), unique=True, nullable=False)
-    power = db.Column(db.String(120))
-    t_con = db.Column(db.String(120))
-    x_main = db.Column(db.String(120))
-    y_main = db.Column(db.String(120))
-    logic = db.Column(db.String(120))
-    invertor = db.Column(db.String(120))
-    y_scan = db.Column(db.String(120))
+    model = db.Column(db.String(256), unique=True, nullable=False)
+    power = db.Column(db.String(256))
+    t_con = db.Column(db.String(256))
+    main = db.Column(db.String(256))
+    x_main = db.Column(db.String(256))
+    y_main = db.Column(db.String(256))
+    logic = db.Column(db.String(256))
+    invertor = db.Column(db.String(256))
+    led_driver = db.Column(db.String(256))
+    y_scan = db.Column(db.String(256))
+    y_sus = db.Column(db.String(256))
 
     pub_date = db.Column(db.DateTime,
                          default=datetime.utcnow)

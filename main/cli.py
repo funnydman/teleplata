@@ -31,4 +31,5 @@ def get_pdf_report():
 @click.command()
 @with_appcontext
 def drop_db():
+    """Drop database tables."""
     db.drop_all()

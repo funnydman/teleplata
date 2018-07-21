@@ -14,6 +14,7 @@ PROJECT_DIR = os.path.dirname(
 )
 
 STATIC_FOLDER = os.path.join(PROJECT_DIR, 'static')
+
 TEMPLATE_FOLDER = os.path.join(PROJECT_DIR, 'templates')
 
 
@@ -48,7 +49,6 @@ def create_app():
     app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) or None
     app.path_to_tests = os.path.join(PROJECT_DIR, 'tests')
     init_db(app)
-
     init_views(app)
     app.wsgi_app = ProxyFix(app.wsgi_app)
 
@@ -63,5 +63,6 @@ def create_app():
     from . import cli
     app.cli.add_command(cli.create_user)
     app.cli.add_command(cli.get_pdf_report)
+    app.cli.add_command(cli.drop_db)
 
     return app

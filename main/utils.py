@@ -3,7 +3,7 @@ from datetime import datetime
 import pdfkit
 from flask import render_template
 
-from main import db
+from main import common, db
 
 
 def get_class_by_tablename(tablename):
@@ -19,8 +19,7 @@ def get_class_by_tablename(tablename):
 
 def get_pdf_report():
     models_by_brand_dict = {}
-    brand_list = ['samsung', 'lg', 'tomson', 'bbk']
-    for brand in brand_list:
+    for brand in common.BRAND_LIST:
         models = get_class_by_tablename(brand).query.all()
         if not models_by_brand_dict.get(brand):
             models_by_brand_dict.update({brand: models})
