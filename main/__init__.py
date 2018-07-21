@@ -1,6 +1,5 @@
 import os
 
-import click
 from elasticsearch import Elasticsearch
 from flask import Flask, session
 from flask_sqlalchemy import SQLAlchemy
@@ -53,26 +52,6 @@ def create_app():
     init_views(app)
     app.wsgi_app = ProxyFix(app.wsgi_app)
 
-    @app.cli.command()
-    @click.option('--username', prompt=True, help='username')
-    @click.password_option()
-    def create_user(username, password):
-        """Create super user."""
-        if username and password:
-            from auth.models import User
-            user = User(username=username, password=password)
-            db.session.add(user)
-            db.session.commit()
-            # click.echo(f'User {username} created')
-        else:
-            click.echo("Enter username and password")
-
-    @app.cli.command()
-    def get_pdf_report():
-        """Make pdf report."""
-        from .views import get_pdf_report
-        get_pdf_report()
-
     @app.before_request
     def make_session_permanent():
         session.permanent = True
@@ -80,5 +59,9 @@ def create_app():
     @app.shell_context_processor
     def shell_context():
         return {'db': db}
+
+    from . import cli
+    app.cli.add_command(cli.create_user)
+    app.cli.add_command(cli.get_pdf_report)
 
     return app
