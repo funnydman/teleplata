@@ -47,6 +47,18 @@ db.event.listen(db.session, 'before_commit', SearchableMixin.before_commit)
 db.event.listen(db.session, 'after_commit', SearchableMixin.after_commit)
 
 
+class Image(db.Model):
+    __tablename__ = 'image'
+    id = db.Column(db.Integer, primary_key=True)
+    power_img = db.Column(db.String(200))
+    t_con_img = db.Column(db.String(200))
+    x_main_img = db.Column(db.String(200))
+    y_main_img = db.Column(db.String(200))
+    logic_img = db.Column(db.String(200))
+    invertor_img = db.Column(db.String(200))
+    y_scan_img = db.Column(db.String(200))
+
+
 class Brand(SearchableMixin, db.Model):
     __abstract__ = True
     __searchable__ = ['model', 'power', 't_con', 'x_main', 'y_main', 'logic', 'invertor', 'y_scan']
@@ -66,6 +78,10 @@ class Brand(SearchableMixin, db.Model):
 
 class Samsung(Brand):
     __tablename__ = 'samsung'
+    image_id = db.Column(db.Integer, db.ForeignKey('image.id'))
+
+    # define relationship
+    image = db.relationship('Image', backref='image')
 
     def __repr__(self):
         return '<Samsung %r>' % self.model

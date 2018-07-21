@@ -35,7 +35,6 @@ def get_pdf_report():
 
 @main.route('/report/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
-    # uploads = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
     filename = get_pdf_report()
     path_to_file = os.path.join(current_app.template_folder, 'report')
     return send_from_directory(directory=path_to_file, filename=filename)
@@ -61,7 +60,7 @@ def home(brand='samsung'):
         models, total = brand.search(search_query, page, 3)
         models = models.paginate(
             page=int(page),
-            per_page=3,
+            per_page=15,
             error_out=False)
     return render_template('home/home.html', models=models, brand=brand)
 

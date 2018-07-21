@@ -2,8 +2,7 @@ import os
 
 import click
 from elasticsearch import Elasticsearch
-from flask import Flask
-from flask import session
+from flask import Flask, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.contrib.fixers import ProxyFix
 
@@ -54,11 +53,6 @@ def create_app():
     init_views(app)
     app.wsgi_app = ProxyFix(app.wsgi_app)
 
-    @app.before_request
-    def make_session_permanent():
-        session.permanent = True
-        # app.permanent_session_lifetime = timedelta(minutes=5)
-
     @app.cli.command()
     @click.option('--username', prompt=True, help='username')
     @click.password_option()
@@ -78,5 +72,9 @@ def create_app():
         """Make pdf report."""
         from .views import get_pdf_report
         get_pdf_report()
+
+    @app.before_request
+    def make_session_permanent():
+        session.permanent = True
 
     return app
