@@ -26,3 +26,9 @@ def get_pdf_report():
     """Make pdf report."""
     from .views import get_pdf_report
     get_pdf_report()
+
+
+@click.command()
+@with_appcontext
+def drop_db():
+    db.drop_all()

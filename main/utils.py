@@ -37,7 +37,6 @@ def get_pdf_report():
 
 
 def paginate(to_paginate, page, per_page=15, error_out=False):
-    return to_paginate.paginate(
-        page=int(page),
-        per_page=per_page,
-        error_out=error_out)
+    return to_paginate.paginate(page=int(page),
+                                per_page=per_page,
+                                error_out=error_out)
