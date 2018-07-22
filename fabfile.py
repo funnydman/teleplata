@@ -1,8 +1,9 @@
 import logging
 
 from fabric import task
-
 # logger configs
+from invoke import Collection
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -17,6 +18,15 @@ try:
 except ImportError:
     logger.error('Failed to open file', exc_info=True)
     raise ImportError("Can't find instance config. Did you import it?")
+
+# use this if you need to type root password
+# sudo_pass = getpass.getpass("What's your sudo password?")
+# config = Config(overrides={'sudo': {'password': REMOTE_PASS}})
+# conn = Connection(host=REMOTE_HOST, config=config)
+
+
+# conn = Connection(host=REMOTE_HOST)
+
 
 database = DATABASE['database']
 username = DATABASE['username']
@@ -35,7 +45,6 @@ REPO_NAME = 'teleplata'
 @task
 def pull_repo(conn, branch='master'):
     """Clone repository if doesn't exist else pull changes."""
-
     if conn.run(f'test -d {REPO_NAME}', warn=True).failed:
         logger.info("Start cloning repository...")
         conn.run(f"git clone -b {branch} {REPO_URL}")
@@ -58,6 +67,10 @@ def install_packages(conn):
     conn.run("sudo wget https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.xenial_amd64.deb")
     conn.run("sudo dpkg -i wkhtmltox_0.12.5-1.xenial_amd64.deb")
     conn.run("sudo apt-get -f install -y")
+
+
+inner = Collection('inner', pull_repo, install_packages)
+inner.configure({'sudo': 'funnydman'})
 
 
 @task
