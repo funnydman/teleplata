@@ -9,7 +9,14 @@
 
 
 ## Getting Started
-1. Create and configure database
+1. Install necessary packages
+
+Go to ```teleplata/deployment``` and execute the script
+```bash
+bash local.sh
+```
+
+2. Create and configure database
 
 ```bash
 # change user to postgres and run psql tool
@@ -24,7 +31,7 @@ CREATE USER username WITH password 'password'
 GRANT ALL ON DATABASE databasename TO username;
 ALTER USER username CREATEDB;
 ```
-2. Create python virtual environment and install packages
+3. Create python virtual environment and install packages
 ```bash
 # in the project directory execute
 virtualenv --python=$(which python3) venv
@@ -32,7 +39,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 ```
-3. Run webpack to collect static
+4. Run webpack to collect static
 
 Go to ```teleplata/static``` directory and run
 ```bash
