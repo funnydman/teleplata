@@ -33,12 +33,12 @@ REPO_NAME = 'teleplata'
 
 
 @task
-def pull_repo(conn):
+def pull_repo(conn, branch='master'):
     """Clone repository if doesn't exist else pull changes."""
 
     if conn.run(f'test -d {REPO_NAME}', warn=True).failed:
         logger.info("Start cloning repository...")
-        conn.run(f"git clone {REPO_URL}")
+        conn.run(f"git clone -b {branch} {REPO_URL}")
     else:
         with conn.cd(f"{REPO_NAME}"):
             logger.info("Pulling repository...")
@@ -54,6 +54,10 @@ def install_packages(conn):
     conn.run(f"sudo apt-get install -y {' '.join(PACKAGES_TO_INSTALL)}")
     conn.run("sudo curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -")
     conn.run("sudo apt-get install -y nodejs")
+
+    conn.run("sudo wget https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.xenial_amd64.deb")
+    conn.run("sudo dpkg -i wkhtmltox_0.12.5-1.xenial_amd64.deb")
+    conn.run("sudo apt-get -f install -y")
 
 
 @task
