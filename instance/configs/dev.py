@@ -6,6 +6,11 @@ DEBUG = True
 TESTING = True
 SECRET_KEY = 'dev'
 
+ELASTICSEARCH_URL = 'http://localhost:9200'
+
+UPLOAD_FOLDER = 'uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
 DATABASE_USER = 'postplata'
 DATABASE_PASSWORD = 'FUNNYDMAN'
 DATABASE_NAME = 'postplata'

@@ -1,8 +1,7 @@
 import os
 
-import click
-from flask import Flask
-from flask import session
+from elasticsearch import Elasticsearch
+from flask import Flask, session, render_template
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.contrib.fixers import ProxyFix
 
@@ -15,6 +14,7 @@ PROJECT_DIR = os.path.dirname(
 )
 
 STATIC_FOLDER = os.path.join(PROJECT_DIR, 'static')
+
 TEMPLATE_FOLDER = os.path.join(PROJECT_DIR, 'templates')
 
 
@@ -46,28 +46,31 @@ def create_app():
                 static_folder=STATIC_FOLDER)
     app.config.from_pyfile('configs/dev.py')
     app.config.from_pyfile('configs/prod.py', silent=True)
-
+    app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) or None
+    app.path_to_tests = os.path.join(PROJECT_DIR, 'tests')
     init_db(app)
-
     init_views(app)
     app.wsgi_app = ProxyFix(app.wsgi_app)
 
     @app.before_request
     def make_session_permanent():
         session.permanent = True
-        # app.permanent_session_lifetime = timedelta(minutes=5)
 
-    @app.cli.command()
-    @click.option('--username', prompt=True, help='username')
-    @click.password_option()
-    def create_user(username, password):
-        if username and password:
-            from auth.models import User
-            user = User(username=username, password=password)
-            db.session.add(user)
-            db.session.commit()
-            # click.echo(f'User {username} created')
-        else:
-            click.echo("Enter username and password")
+    @app.shell_context_processor
+    def shell_context():
+        return {'db': db}
+
+    from . import cli
+    app.cli.add_command(cli.create_user)
+    app.cli.add_command(cli.get_pdf_report)
+    app.cli.add_command(cli.drop_db)
+
+    @app.errorhandler(404)
+    def page_not_found(error):
+        return render_template('404.html'), 404
+
+    @app.errorhandler(500)
+    def server_error(error):
+        return render_template('500.html'), 500
 
     return app

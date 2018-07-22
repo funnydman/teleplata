@@ -1,8 +1,9 @@
+{% extends 'base.html' %}
 {% block page_not_found_error %}
     {% include 'header.html' %}
-    <section class="page-not-found">
+    <div class="page-not-found">
         <img src="{{ url_for('static',
-                filename='img/404.jpg') }}" alt="404 page not found">
-    </section>
+                filename='img/404.jpg') }}" alt="404 page not found" style="width: 100%;">
+    </div>
     {% include 'footer.html' %}
 {% endblock %}

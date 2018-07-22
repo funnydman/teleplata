@@ -1,8 +1,9 @@
 import logging
 
 from fabric import task
-
 # logger configs
+from invoke import Collection
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -18,12 +19,22 @@ except ImportError:
     logger.error('Failed to open file', exc_info=True)
     raise ImportError("Can't find instance config. Did you import it?")
 
+# use this if you need to type root password
+# sudo_pass = getpass.getpass("What's your sudo password?")
+# config = Config(overrides={'sudo': {'password': REMOTE_PASS}})
+# conn = Connection(host=REMOTE_HOST, config=config)
+
+
+# conn = Connection(host=REMOTE_HOST)
+
+
 database = DATABASE['database']
 username = DATABASE['username']
 password = DATABASE['password']
 
+# TODO need to install wkhtmltopdf with patched qt
 PACKAGES_TO_INSTALL = ("build-essential", "postgresql", "postgresql-contrib", "python3-pip", "python-dev", "virtualenv",
-                       "nginx", "supervisor")
+                       "nginx", "supervisor", "wkhtmltopdf")
 
 REPO_URL = 'https://github.com/FUNNYDMAN/teleplata.git'
 
@@ -32,12 +43,11 @@ REPO_NAME = 'teleplata'
 
 
 @task
-def pull_repo(conn):
+def pull_repo(conn, branch='master'):
     """Clone repository if doesn't exist else pull changes."""
-
     if conn.run(f'test -d {REPO_NAME}', warn=True).failed:
         logger.info("Start cloning repository...")
-        conn.run(f"git clone {REPO_URL}")
+        conn.run(f"git clone -b {branch} {REPO_URL}")
     else:
         with conn.cd(f"{REPO_NAME}"):
             logger.info("Pulling repository...")
@@ -53,6 +63,23 @@ def install_packages(conn):
     conn.run(f"sudo apt-get install -y {' '.join(PACKAGES_TO_INSTALL)}")
     conn.run("sudo curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -")
     conn.run("sudo apt-get install -y nodejs")
+
+    conn.run("sudo wget https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.xenial_amd64.deb")
+    conn.run("sudo dpkg -i wkhtmltox_0.12.5-1.xenial_amd64.deb")
+    conn.run("sudo apt-get -f install -y")
+
+
+inner = Collection('inner', pull_repo, install_packages)
+inner.configure({'sudo': 'funnydman'})
+
+
+@task
+def install_deps_for_elasticsearch(conn):
+    conn.run("sudo apt-get update")
+    conn.run("sudo apt-get install -y default-jre default-jdk")
+    conn.run("sudo add-apt-repository ppa:webupd8team/java")
+    conn.run("sudo apt-get update")
+    conn.run("sudo apt-get install -y oracle-java8-installer")
 
 
 @task(pull_repo, install_packages)

@@ -1,4 +1,9 @@
-from main import db
+from datetime import datetime
+
+import pdfkit
+from flask import render_template
+
+from main import common, db
 
 
 def get_class_by_tablename(tablename):
@@ -12,5 +17,25 @@ def get_class_by_tablename(tablename):
             return c
 
 
-def search_in_all_model_names(model, search):
-    pass
+def get_pdf_report():
+    models_by_brand_dict = {}
+    for brand in common.BRAND_LIST:
+        models = get_class_by_tablename(brand).query.all()
+        if not models_by_brand_dict.get(brand):
+            models_by_brand_dict.update({brand: models})
+    # TODO fix problem with page break
+    options = {
+        'footer-right': '[page]'
+    }
+    # TODO should we add time to datetime string?
+    current_date = datetime.utcnow().strftime("%Y_%m_%d")
+    filename = 'report-' + current_date + '.pdf'
+    template = render_template('report/report.html', models=models_by_brand_dict)
+    pdfkit.from_string(template, f'templates/report/{filename}', options=options)
+    return filename
+
+
+def paginate(to_paginate, page, per_page=15, error_out=False):
+    return to_paginate.paginate(page=int(page),
+                                per_page=per_page,
+                                error_out=error_out)

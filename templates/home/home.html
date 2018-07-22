@@ -91,92 +91,7 @@
                                         {% if g.user %}
                                             <a class="model-edit"
                                                href="
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                                       {{ url_for("admin.model_edit", brand=brand.__tablename__, model=model.model) }}">&#9998;</a>
+{{ url_for("admin.model_edit", brand=brand.__tablename__, model=model.model) }}">&#9998;</a>
                                             <form method="POST" class="model-delete">
                                                 <input type="hidden" name="model-id-delete" value="{{ model.id }}">
                                                 <input type="submit" value="&#10006;">
@@ -188,7 +103,7 @@
                                     class="model-detail model-detail-{{ model.id }}">
                                     <li>
                                         Power:<span>{{ model.power }}</span>
-                                        <img src="#" alt="">
+                                        <a href="#"><img src="http://via.placeholder.com/350x150" alt=""></a>
                                     </li>
                                     <li>
                                         Inverter:<span>{{ model.invertor }}</span>
@@ -255,6 +170,12 @@
                 <h2>Убедитесь в том, что запрос введен верно</h2>
             </div>
         {% endif %}
+        <div class="report">
+            <div class="row">
+                <a href="{{ url_for('main.download', filename='report.pdf') }}" class="button download" download>Скачать
+                    каталог</a>
+            </div>
+        </div>
     </div>
     {% include 'footer.html' %}
 

@@ -23,14 +23,7 @@ fi
 sudo -u ${USER} pg_dump --data-only ${DATABASE} > ${OUTPUT_FILE}
 
 # gzip the mysql database dump file
-gzip $OUTPUT_FILE
-
-
-# show the user the result
-echo "${OUTPUT_FILE}.gz was created:"
-ls -l ${OUTPUT_FILE}.gz
-
-
+#gzip $OUTPUT_FILE
 
 # prune old backups
-find $BACKUP_DIR -maxdepth 1 -mtime +$DAYS_TO_KEEP -name "*${FILE_SUFFIX}.gz" -exec rm -rf '{}' ';'
+find $BACKUP_DIR -maxdepth 1 -mtime +$DAYS_TO_KEEP -name "*${FILE_SUFFIX}.sql" -exec rm -rf '{}' ';'

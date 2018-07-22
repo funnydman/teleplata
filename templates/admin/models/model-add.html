@@ -12,14 +12,24 @@
         <div class="col-md-4">
 
             <div class="model-add">
-                <form method="POST">
+                <form method="POST" enctype="multipart/form-data">
                     <label for="model">Модель:</label>
                     <input type="text" name="model" id="model" required>
-                    {% if message %}
-                        <p class="model-exist-error">{{ message }}</p>
-                    {% endif %}
-                    <label for="power">Power:</label>
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <p class="model-exist-error">{{ message }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    {#                    {% if message %}#}
+                    {#                        <p>{{ message }}</p>#}
+                    {#                    {% endif %}#}
+                    <label for="power">
+                        Power:
+                    </label>
                     <input type="text" name="power" id="power">
+                    <input type="file" name="power_img">
 
                     <label for="t_con">t-con:</label>
                     <input type="text" name="t_con" id="t_con">
