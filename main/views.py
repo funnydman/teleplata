@@ -1,9 +1,19 @@
-from flask import Blueprint, render_template, request, g
+import os
+
+from flask import Blueprint, render_template, request, g, send_from_directory
+from flask import current_app
 
 from main import db
-from .utils import get_class_by_tablename
+from .utils import get_class_by_tablename, get_pdf_report, paginate
 
 main = Blueprint('main', __name__)
+
+
+@main.route('/report/<path:filename>', methods=['GET', 'POST'])
+def download(filename):
+    filename = get_pdf_report()
+    path_to_file = os.path.join(current_app.template_folder, 'report')
+    return send_from_directory(directory=path_to_file, filename=filename)
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -16,38 +26,15 @@ def home(brand='samsung'):
         if obj_to_del:
             db.session.delete(obj_to_del)
             db.session.commit()
-    page = request.args.get('page', 1)
+
+    page = request.args.get('page', 1, type=int)
     search_query = request.args.get('search')
-    models = brand.query.paginate(
-        page=int(page),
-        per_page=15,
-        error_out=False)
-    # TODO: add full-text search
+    models = paginate(brand.query, page)
     if search_query:
-        models = brand.query.filter(
-            brand.model.contains(search_query) |
-            brand.power.contains(search_query) |
-            brand.t_con.contains(search_query) |
-            brand.x_main.contains(search_query) |
-            brand.y_main.contains(search_query) |
-            brand.logic.contains(search_query) |
-            brand.invertor.contains(search_query) |
-            brand.y_scan.contains(search_query)
-        ).paginate(
-            page=int(page),
-            per_page=3,
-            error_out=False)
+        # TODO remove pagination logical from brand.search
+        models, total = brand.search(search_query, page, 3)
+        models = paginate(models, page)
     return render_template('home/home.html', models=models, brand=brand)
-
-
-@main.errorhandler(404)
-def page_not_found(error):
-    return render_template('404.html'), 404
-
-
-@main.errorhandler(500)
-def server_error(error):
-    return render_template('500.html'), 500
 
 
 @main.before_app_first_request

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Report</title>
+</head>
+<body>
+<style>
+    header {
+        text-align: center;
+        background-color: #4CAF50;
+        color: #ffffff;
+        font-family: "RobotoRegular", Arial, Helvetica, sans-serif;
+
+    }
+
+    header h1 {
+        margin-top: 0;
+        padding-top: 15px;
+    }
+
+    header h2 {
+        padding-bottom: 15px;
+        margin-top: 8px;
+    }
+
+    .report-info h1 {
+        font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+    }
+
+    #report-table {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    #report-table td, #report-table th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    #report-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #report-table tr:hover {
+        background-color: #ddd;
+    }
+
+    #report-table th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #4CAF50;
+        color: #ffffff;
+    }
+
+    .no-models {
+        background-color: #4CAF50;
+    }
+
+    .no-models p {
+        padding: 15px 0;
+        text-align: center;
+        color: #ffffff;
+        font-family: "RobotoRegular", Arial, Helvetica, sans-serif;
+        font-size: 18px;
+    }
+</style>
+<header>
+    <h1>TELEPLATA</h1>
+    <h2>Продажа плат к LCD и плазменным телевизорам</h2>
+</header>
+{% if models %}
+    <div class="report-info">
+        {% for brand in models.keys() %}
+            <h1>{{ brand }}</h1>
+            {% if models[brand] %}
+                <table id="report-table">
+                    <tr>
+                        <th>Модель</th>
+                        <th>Power</th>
+                        <th>t-con</th>
+                        <th>x-main</th>
+                        <th>y-main</th>
+                        <th>logic</th>
+                        <th>invertor</th>
+                        <th>y-scan</th>
+                    </tr>
+                    {% for item in models[brand] %}
+                        {% if item %}
+                            <tr>
+                                <td>{{ item.model }}</td>
+                                <td>{{ item.power }}</td>
+                                <td>{{ item.t_con }}</td>
+                                <td>{{ item.x_main }}</td>
+                                <td>{{ item.y_main }}</td>
+                                <td>{{ item.logic }}</td>
+                                <td>{{ item.invertor }}</td>
+                                <td>{{ item.y_scan }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            {% else %}
+                <div class="no-models">
+                    <p>Похоже нет моделей для данного бренда</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+</body>
+</html>

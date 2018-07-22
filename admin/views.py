@@ -1,9 +1,9 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, flash
 
 from auth.views import login_required
-from main import TEMPLATE_FOLDER, STATIC_FOLDER
-from main import db
+from main import db, TEMPLATE_FOLDER, STATIC_FOLDER
 from main.utils import get_class_by_tablename
+from .utils import get_form_data
 
 bp_admin = Blueprint('admin', __name__,
                      url_prefix='/admin',
@@ -24,22 +24,22 @@ def add_new_model(brand):
     message = None
     brand = get_class_by_tablename(brand)
     if request.method == 'POST':
-        model = request.form['model']
-        power = request.form['power']
-        t_con = request.form['t_con']
-        x_main = request.form['x_main']
-        y_main = request.form['y_main']
-        logic = request.form['logic']
-        invertor = request.form['invertor']
-        y_scan = request.form['y_scan']
-        new_obj = brand(model=model, power=power, t_con=t_con, x_main=x_main,
-                        y_main=y_main, logic=logic, invertor=invertor, y_scan=y_scan)
-        if not brand.query.filter_by(model=model).first():
-            db.session.add(new_obj)
+        form_data = get_form_data(request)
+        new_model_obj = brand(model=form_data['model'],
+                              power=form_data['power'],
+                              t_con=form_data['t_con'],
+                              x_main=form_data['x_main'],
+                              y_main=form_data['y_main'],
+                              logic=form_data['logic'],
+                              invertor=form_data['invertor'],
+                              y_scan=form_data['y_scan'])
+        if not brand.query.filter_by(model=form_data['model']).first():
+            db.session.add(new_model_obj)
             db.session.commit()
             is_sent_ok = True
         else:
             message = 'Такая модель уже есть в базе данных'
+            flash(message)
     last_five_models = brand.query.order_by(brand.pub_date.desc()).limit(5).all()
     return render_template('admin/models/model-add.html', brand=brand,
                            is_sent_ok=is_sent_ok, message=message, last_five_models=last_five_models)

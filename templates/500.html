@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block server_error %}
+    {% include 'header.html' %}
+    <div class="page-not-found">
+        <img src="{{ url_for('static',
+                filename='img/500.jpeg') }}" alt="500 server error" style="width: 100%;">
+    </div>
+    {% include 'footer.html' %}
+{% endblock %}

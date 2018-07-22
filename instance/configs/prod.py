@@ -4,7 +4,9 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 DEBUG = False
 TESTING = False
-SECRET_KEY = 'prod'
+# generated with command
+# python3 -c "import uuid; print(uuid.uuid4().hex)"
+SECRET_KEY = '24d91df36ec74b069cdc29c2497a2982'
 
 DATABASE_USER = 'postplata'
 DATABASE_PASSWORD = 'FUNNYDMAN'
