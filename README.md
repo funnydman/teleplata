@@ -32,4 +32,11 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 ```
+3. Run webpack to collect static
+
+Go to ```teleplata/static``` directory and run
+```bash
+npm install
+npm run dev
+```
 ![teleplata screenshot](static/img/teleplata.png)
