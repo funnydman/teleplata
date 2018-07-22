@@ -4,7 +4,7 @@ import pytest
 from alembic.command import upgrade
 from alembic.config import Config
 
-from main import create_app, db as _db, PROJECT_DIR
+from teleplata.main import create_app, db as _db, PROJECT_DIR
 
 ALEMBIC_CONFIG = os.path.join(PROJECT_DIR, 'alembic.ini')
 

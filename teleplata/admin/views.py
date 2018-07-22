@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, flash
 
-from auth.views import login_required
-from main import db, TEMPLATE_FOLDER, STATIC_FOLDER
-from main.utils import get_class_by_tablename
+from teleplata.auth.views import login_required
+from teleplata.main import db, TEMPLATE_FOLDER, STATIC_FOLDER
+from teleplata.main.utils import get_class_by_tablename
 from .utils import get_form_data
 
 bp_admin = Blueprint('admin', __name__,

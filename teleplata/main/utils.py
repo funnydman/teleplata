@@ -3,7 +3,7 @@ from datetime import datetime
 import pdfkit
 from flask import render_template
 
-from main import common, db
+from . import common, db
 
 
 def get_class_by_tablename(tablename):

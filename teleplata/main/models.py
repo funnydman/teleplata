@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from main import db
-from main.common import MODEL_FIELDS
+from . import db
+from .common import MODEL_FIELDS
 from .mixins import SearchableMixin
 
 db.event.listen(db.session, 'before_commit', SearchableMixin.before_commit)

@@ -1,7 +1,7 @@
 import click
 from flask.cli import with_appcontext
 
-from main import db
+from . import db
 
 
 @click.command()

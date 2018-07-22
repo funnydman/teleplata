@@ -1,5 +1,5 @@
-from auth.models import User
-from main.models import Samsung
+from teleplata.auth.models import User
+from teleplata.main.models import Samsung
 
 
 # def test_load_data_to_db(app, db):

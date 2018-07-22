@@ -7,11 +7,12 @@ from werkzeug.contrib.fixers import ProxyFix
 
 db = SQLAlchemy()
 
-PROJECT_DIR = os.path.dirname(
+BASE_DIR = os.path.dirname(
     os.path.dirname(
         os.path.abspath(__file__)
     )
 )
+PROJECT_DIR = os.path.dirname(BASE_DIR)
 
 STATIC_FOLDER = os.path.join(PROJECT_DIR, 'static')
 
@@ -29,10 +30,10 @@ def init_views(app):
     from . import views
     app.register_blueprint(views.main)
 
-    from admin import views
+    from teleplata.admin import views
     app.register_blueprint(views.bp_admin)
 
-    from auth import views
+    from teleplata.auth import views
     app.register_blueprint(views.auth)
 
 
@@ -47,7 +48,7 @@ def create_app():
     app.config.from_pyfile('configs/dev.py')
     app.config.from_pyfile('configs/prod.py', silent=True)
     app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) or None
-    app.path_to_tests = os.path.join(PROJECT_DIR, 'tests')
+    app.path_to_tests = os.path.join(BASE_DIR, 'tests')
     init_db(app)
     init_views(app)
     app.wsgi_app = ProxyFix(app.wsgi_app)

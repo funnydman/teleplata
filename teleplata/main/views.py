@@ -3,7 +3,7 @@ import os
 from flask import Blueprint, render_template, request, g, send_from_directory
 from flask import current_app
 
-from main import db
+from . import db
 from .utils import get_class_by_tablename, get_pdf_report, paginate
 
 main = Blueprint('main', __name__)

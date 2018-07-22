@@ -11,7 +11,7 @@
 ## Getting Started
 1. Install necessary packages
 
-Go to ```teleplata/deployment``` and execute the script
+Go to ```deployment``` folder and execute the script
 ```bash
 bash local.sh
 ```
@@ -41,7 +41,7 @@ pip install -r requirements.txt
 ```
 4. Run webpack to collect static
 
-Go to ```teleplata/static``` directory and run
+Go to ```static``` directory and execute
 ```bash
 npm install
 npm run dev

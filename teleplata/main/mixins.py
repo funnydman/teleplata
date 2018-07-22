@@ -1,5 +1,5 @@
-from main import db
-from main.search import add_to_index, remove_from_index, query_index
+from . import db
+from .search import add_to_index, remove_from_index, query_index
 
 
 class SearchableMixin(object):
