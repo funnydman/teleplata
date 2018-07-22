@@ -39,4 +39,6 @@ Go to ```teleplata/static``` directory and run
 npm install
 npm run dev
 ```
+
+## Screenshots
 ![teleplata screenshot](static/img/teleplata.png)
