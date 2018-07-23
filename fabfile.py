@@ -28,9 +28,8 @@ database = DATABASE['database']
 username = DATABASE['username']
 password = DATABASE['password']
 
-# TODO need to install wkhtmltopdf with patched qt
 PACKAGES_TO_INSTALL = ("build-essential", "postgresql", "postgresql-contrib", "python3-pip", "python-dev", "virtualenv",
-                       "nginx", "supervisor", "wkhtmltopdf")
+                       "nginx")
 
 REPO_URL = 'https://github.com/FUNNYDMAN/teleplata.git'
 
@@ -114,7 +113,7 @@ def create_env(conn):
     """Create and configure virtualenv."""
     with conn.cd(f'{REPO_NAME}'):
         if conn.run('test -d venv', warn=True).failed:
-            conn.run('virtualenv --python=$(which python3) venv')
+            conn.run('virtualenv --python=$(which python3.6) venv')
             conn.run('source venv/bin/activate && pip install -r requirements.txt')
 
 

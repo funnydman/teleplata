@@ -1,0 +1,10 @@
+[Unit]
+Description=TeleplataService
+
+[Service]
+Type=idle
+ExecStart=/home/tele/teleplata/venv/bin/gunicorn teleplata.main:"create_app()" -w 4
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

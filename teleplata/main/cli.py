@@ -1,6 +1,10 @@
+import os
+
 import click
+from flask import current_app
 from flask.cli import with_appcontext
 
+from teleplata.auth.models import User
 from . import db
 
 
@@ -11,13 +15,15 @@ from . import db
 def create_user(username, password):
     """Create super user."""
     if username and password:
-        from auth.models import User
-        user = User(username=username, password=password)
-        db.session.add(user)
-        db.session.commit()
-        # click.echo(f'User {username} created')
+        if not User.query.filter_by(username=username).first():
+            user = User(username=username, password=password)
+            db.session.add(user)
+            db.session.commit()
+            click.echo(f"User {username} created.")
+        else:
+            click.echo("User with this username exist.")
     else:
-        click.echo("Enter username and password")
+        click.echo("Enter username and password.")
 
 
 @click.command()
@@ -25,7 +31,8 @@ def create_user(username, password):
 def get_pdf_report():
     """Make pdf report."""
     from .views import get_pdf_report
-    get_pdf_report()
+    report_folder = os.path.join(current_app.template_folder, 'report')
+    get_pdf_report('report/report.html', report_folder)
 
 
 @click.command()
