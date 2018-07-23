@@ -1,8 +1,8 @@
 import logging
 
 from fabric import task
+
 # logger configs
-from invoke import Collection
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -21,12 +21,8 @@ except ImportError:
 
 # use this if you need to type root password
 # sudo_pass = getpass.getpass("What's your sudo password?")
-# config = Config(overrides={'sudo': {'password': REMOTE_PASS}})
-# conn = Connection(host=REMOTE_HOST, config=config)
-
-
-# conn = Connection(host=REMOTE_HOST)
-
+# config = Config(overrides={'sudo': {'password': sudo_pass}})
+# conn = ConnectionCall(task={}, init_kwargs={'host': 'tele'})
 
 database = DATABASE['database']
 username = DATABASE['username']
@@ -42,7 +38,7 @@ REPO_URL = 'https://github.com/FUNNYDMAN/teleplata.git'
 REPO_NAME = 'teleplata'
 
 
-@task
+@task()
 def pull_repo(conn, branch='master'):
     """Clone repository if doesn't exist else pull changes."""
     if conn.run(f'test -d {REPO_NAME}', warn=True).failed:
@@ -69,8 +65,8 @@ def install_packages(conn):
     conn.run("sudo apt-get -f install -y")
 
 
-inner = Collection('inner', pull_repo, install_packages)
-inner.configure({'sudo': 'funnydman'})
+# inner = Collection('inner', pull_repo, install_packages)
+# inner.configure({'sudo': 'funnydman'})
 
 
 @task
@@ -82,7 +78,7 @@ def install_deps_for_elasticsearch(conn):
     conn.run("sudo apt-get install -y oracle-java8-installer")
 
 
-@task(pull_repo, install_packages)
+@task
 def build_statics(conn):
     """Build staticfiles."""
     logger.info("Start building staticfiles...")
@@ -102,7 +98,7 @@ def create_database(conn):
         conn.sudo(f'psql -c "ALTER USER {username} CREATEDB;" -U postgres')
 
 
-@task(pull_repo)
+@task
 def configure_server(conn):
     """Configure the server."""
     conn.put('instance/configs/prod.py', f'{REPO_NAME}/instance/configs/prod.py')
@@ -113,7 +109,7 @@ def configure_server(conn):
     conn.sudo('service nginx reload')
 
 
-@task(pull_repo)
+@task
 def create_env(conn):
     """Create and configure virtualenv."""
     with conn.cd(f'{REPO_NAME}'):
@@ -122,14 +118,8 @@ def create_env(conn):
             conn.run('source venv/bin/activate && pip install -r requirements.txt')
 
 
-@task(pull_repo, install_packages, create_env, configure_server)
+@task
 def run_app(conn):
     """Run application."""
     with conn.cd(f'{REPO_NAME}'):
         conn.run('source venv/bin/activate && gunicorn main:"create_app()"')
-
-
-# TODO command 'fab -H <host> build' doesn't work with server. Why?
-@task(pull_repo, install_packages, build_statics, create_database, configure_server, create_env, run_app)
-def build(conn):
-    conn.run("Configured")

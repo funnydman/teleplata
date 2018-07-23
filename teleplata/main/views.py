@@ -11,9 +11,9 @@ main = Blueprint('main', __name__)
 
 @main.route('/report/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
-    filename = get_pdf_report()
-    path_to_file = os.path.join(current_app.template_folder, 'report')
-    return send_from_directory(directory=path_to_file, filename=filename)
+    report_folder = os.path.join(current_app.template_folder, 'report')
+    filename = get_pdf_report('report/report.html', report_folder)
+    return send_from_directory(directory=report_folder, filename=filename)
 
 
 @main.route('/', methods=['GET', 'POST'])

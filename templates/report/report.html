@@ -68,6 +68,10 @@
         font-family: "RobotoRegular", Arial, Helvetica, sans-serif;
         font-size: 18px;
     }
+
+    .keep-together {
+        page-break-inside: avoid;
+    }
 </style>
 <header>
     <h1>TELEPLATA</h1>
@@ -76,39 +80,41 @@
 {% if models %}
     <div class="report-info">
         {% for brand in models.keys() %}
-            <h1>{{ brand }}</h1>
-            {% if models[brand] %}
-                <table id="report-table">
-                    <tr>
-                        <th>Модель</th>
-                        <th>Power</th>
-                        <th>t-con</th>
-                        <th>x-main</th>
-                        <th>y-main</th>
-                        <th>logic</th>
-                        <th>invertor</th>
-                        <th>y-scan</th>
-                    </tr>
-                    {% for item in models[brand] %}
-                        {% if item %}
-                            <tr>
-                                <td>{{ item.model }}</td>
-                                <td>{{ item.power }}</td>
-                                <td>{{ item.t_con }}</td>
-                                <td>{{ item.x_main }}</td>
-                                <td>{{ item.y_main }}</td>
-                                <td>{{ item.logic }}</td>
-                                <td>{{ item.invertor }}</td>
-                                <td>{{ item.y_scan }}</td>
-                            </tr>
-                        {% endif %}
-                    {% endfor %}
-                </table>
-            {% else %}
-                <div class="no-models">
-                    <p>Похоже нет моделей для данного бренда</p>
-                </div>
-            {% endif %}
+            <div class="model-report keep-together">
+                <h1>{{ brand }}</h1>
+                {% if models[brand] %}
+                    <table id="report-table">
+                        <tr>
+                            <th>Модель</th>
+                            <th>Power</th>
+                            <th>t-con</th>
+                            <th>x-main</th>
+                            <th>y-main</th>
+                            <th>logic</th>
+                            <th>invertor</th>
+                            <th>y-scan</th>
+                        </tr>
+                        {% for item in models[brand] %}
+                            {% if item %}
+                                <tr>
+                                    <td>{{ item.model }}</td>
+                                    <td>{{ item.power }}</td>
+                                    <td>{{ item.t_con }}</td>
+                                    <td>{{ item.x_main }}</td>
+                                    <td>{{ item.y_main }}</td>
+                                    <td>{{ item.logic }}</td>
+                                    <td>{{ item.invertor }}</td>
+                                    <td>{{ item.y_scan }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </table>
+                {% else %}
+                    <div class="no-models">
+                        <p>Похоже нет моделей для данного бренда</p>
+                    </div>
+                {% endif %}
+            </div>
         {% endfor %}
     </div>
 {% endif %}
