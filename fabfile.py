@@ -1,6 +1,6 @@
 import logging
 
-from fabric import task
+from fabric import Config, Connection
 
 # logger configs
 
@@ -19,10 +19,9 @@ except ImportError:
     logger.error('Failed to open file', exc_info=True)
     raise ImportError("Can't find instance config. Did you import it?")
 
-# use this if you need to type root password
 # sudo_pass = getpass.getpass("What's your sudo password?")
-# config = Config(overrides={'sudo': {'password': sudo_pass}})
-# conn = ConnectionCall(task={}, init_kwargs={'host': 'tele'})
+config = Config(overrides={'sudo': {'password': 'tele1234'}})
+conn = Connection(host='tele', user='tele')
 
 database = DATABASE['database']
 username = DATABASE['username']
@@ -37,8 +36,7 @@ REPO_URL = 'https://github.com/FUNNYDMAN/teleplata.git'
 REPO_NAME = 'teleplata'
 
 
-@task()
-def pull_repo(conn, branch='master'):
+def pull_repo(branch='master'):
     """Clone repository if doesn't exist else pull changes."""
     if conn.run(f'test -d {REPO_NAME}', warn=True).failed:
         logger.info("Start cloning repository...")
@@ -49,26 +47,18 @@ def pull_repo(conn, branch='master'):
             conn.run("git pull")
 
 
-# TODO fix problem with sudo mode. Tasks doesn't work with conn.sudo
-# Problem: a task trying to get root password from a console
-@task
 def install_packages(conn):
     """Install necessary packages."""
-    conn.run("sudo apt-get update")
-    conn.run(f"sudo apt-get install -y {' '.join(PACKAGES_TO_INSTALL)}")
-    conn.run("sudo curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -")
-    conn.run("sudo apt-get install -y nodejs")
+    conn.sudo("apt-get update")
+    conn.sudo(f"apt-get install -y {' '.join(PACKAGES_TO_INSTALL)}")
+    conn.sudo("curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -")
+    conn.sudo("apt-get install -y nodejs")
 
-    conn.run("sudo wget https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.xenial_amd64.deb")
-    conn.run("sudo dpkg -i wkhtmltox_0.12.5-1.xenial_amd64.deb")
-    conn.run("sudo apt-get -f install -y")
-
-
-# inner = Collection('inner', pull_repo, install_packages)
-# inner.configure({'sudo': 'funnydman'})
+    conn.run("wget https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.xenial_amd64.deb")
+    conn.sudo("dpkg -i wkhtmltox_0.12.5-1.xenial_amd64.deb")
+    conn.sudo("apt-get -f install -y")
 
 
-@task
 def install_deps_for_elasticsearch(conn):
     conn.run("sudo apt-get update")
     conn.run("sudo apt-get install -y default-jre default-jdk")
@@ -77,7 +67,6 @@ def install_deps_for_elasticsearch(conn):
     conn.run("sudo apt-get install -y oracle-java8-installer")
 
 
-@task
 def build_statics(conn):
     """Build staticfiles."""
     logger.info("Start building staticfiles...")
@@ -86,7 +75,6 @@ def build_statics(conn):
             conn.run("npm install && npm run build")
 
 
-@task
 def create_database(conn):
     """Create and configure database."""
     if conn.sudo(f'psql -c "CREATE DATABASE {database};" -U postgres', warn=True).ok:
@@ -97,7 +85,6 @@ def create_database(conn):
         conn.sudo(f'psql -c "ALTER USER {username} CREATEDB;" -U postgres')
 
 
-@task
 def configure_server(conn):
     """Configure the server."""
     conn.put('instance/configs/prod.py', f'{REPO_NAME}/instance/configs/prod.py')
@@ -108,7 +95,6 @@ def configure_server(conn):
     conn.sudo('service nginx reload')
 
 
-@task
 def create_env(conn):
     """Create and configure virtualenv."""
     with conn.cd(f'{REPO_NAME}'):
@@ -117,8 +103,11 @@ def create_env(conn):
             conn.run('source venv/bin/activate && pip install -r requirements.txt')
 
 
-@task
 def run_app(conn):
     """Run application."""
     with conn.cd(f'{REPO_NAME}'):
         conn.run('source venv/bin/activate && gunicorn main:"create_app()"')
+
+
+pull_repo()
+install_packages(conn)
