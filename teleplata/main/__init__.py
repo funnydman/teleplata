@@ -3,7 +3,11 @@ import os
 from elasticsearch import Elasticsearch
 from flask import Flask, session, render_template
 from flask_sqlalchemy import SQLAlchemy
+from raven.contrib.flask import Sentry
 from werkzeug.contrib.fixers import ProxyFix
+
+sentry = Sentry(
+    dsn='https://3dda6990d61640b0ba148be5130230e1:6d66f1b5ae6b487889bba83e1f8bc9d9@sentry.io/1248274')
 
 db = SQLAlchemy()
 
@@ -12,6 +16,7 @@ BASE_DIR = os.path.dirname(
         os.path.abspath(__file__)
     )
 )
+
 PROJECT_DIR = os.path.dirname(BASE_DIR)
 
 STATIC_FOLDER = os.path.join(PROJECT_DIR, 'static')
@@ -51,6 +56,7 @@ def create_app():
     app.path_to_tests = os.path.join(BASE_DIR, 'tests')
     init_db(app)
     init_views(app)
+    sentry.init_app(app)
     app.wsgi_app = ProxyFix(app.wsgi_app)
 
     @app.before_request
