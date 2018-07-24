@@ -4,7 +4,7 @@ import click
 from flask import current_app
 from flask.cli import with_appcontext
 
-from teleplata.auth.models import User
+from teleplata.admin.models import User
 from . import db
 
 

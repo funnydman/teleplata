@@ -38,9 +38,6 @@ def init_views(app):
     from teleplata.admin import views
     app.register_blueprint(views.bp_admin)
 
-    from teleplata.auth import views
-    app.register_blueprint(views.auth)
-
 
 def init_db(app):
     db.init_app(app)

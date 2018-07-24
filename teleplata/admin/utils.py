@@ -6,5 +6,6 @@ def get_form_data(request):
     result_dict = {}
     table_fields = MODEL_FIELDS
     for field in table_fields:
-        result_dict.update({field: request.form[field]})
+        if request.form[field]:
+            result_dict.update({field: request.form[field]})
     return result_dict

@@ -1,6 +1,8 @@
-from flask import Blueprint, render_template, request, flash
+import functools
 
-from teleplata.auth.views import login_required
+from flask import Blueprint, render_template, request, flash, session, url_for, redirect, g
+
+from teleplata.admin.models import User
 from teleplata.main import db, TEMPLATE_FOLDER, STATIC_FOLDER
 from teleplata.main.utils import get_class_by_tablename
 from .utils import get_form_data
@@ -9,6 +11,56 @@ bp_admin = Blueprint('admin', __name__,
                      url_prefix='/admin',
                      static_folder=STATIC_FOLDER,
                      template_folder=TEMPLATE_FOLDER)
+
+
+@bp_admin.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        error = None
+        if username and password:
+            user = User.query.filter_by(username=username).first()
+            if user is None:
+                error = 'Incorrect username or user does not exist'
+                flash(error, 'error')
+            elif not user.check_password(password):
+                error = 'Incorrect password.'
+                flash(error, 'error')
+            if error is None:
+                session.clear()
+                session['user_id'] = user.id
+                flash('You were logged in', 'success')
+                return redirect(url_for('admin.admin'))
+
+    return render_template("admin/login.html")
+
+
+@bp_admin.route('/logout')
+def logout():
+    session.clear()
+    flash('You were logged out', 'success')
+    return redirect(url_for('main.home'))
+
+
+@bp_admin.before_app_request
+def load_logged_in_user():
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        g.user = None
+    else:
+        g.user = User.query.get(user_id)
+
+
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('admin.login'))
+        return view(**kwargs)
+
+    return wrapped_view
 
 
 @bp_admin.route('/')
