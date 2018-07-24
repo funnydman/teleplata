@@ -2,10 +2,6 @@ from datetime import datetime
 
 from . import db
 from .common import MODEL_FIELDS
-from .mixins import SearchableMixin
-
-db.event.listen(db.session, 'before_commit', SearchableMixin.before_commit)
-db.event.listen(db.session, 'after_commit', SearchableMixin.after_commit)
 
 
 class Image(db.Model):
@@ -20,7 +16,7 @@ class Image(db.Model):
     y_scan_img = db.Column(db.String(200))
 
 
-class Brand(SearchableMixin, db.Model):
+class Brand(db.Model):
     __abstract__ = True
     __searchable__ = MODEL_FIELDS
     id = db.Column(db.Integer, primary_key=True, unique=True)

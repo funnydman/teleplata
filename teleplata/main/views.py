@@ -28,12 +28,8 @@ def home(brand='samsung'):
             db.session.commit()
 
     page = request.args.get('page', 1, type=int)
-    search_query = request.args.get('search')
+    # search_query = request.args.get('search')
     models = paginate(brand.query, page)
-    if search_query:
-        # TODO remove pagination logical from brand.search
-        models, total = brand.search(search_query, page, 3)
-        models = paginate(models, page)
     return render_template('home/home.html', models=models, brand=brand)
 
 

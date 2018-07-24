@@ -62,15 +62,6 @@ def install_packages(conn):
 
 
 @task(hosts=hosts)
-def install_java(conn):
-    conn.sudo("apt-get update")
-    conn.sudo("apt-get install -y default-jre default-jdk")
-    conn.sudo("add-apt-repository ppa:webupd8team/java")
-    conn.sudo("apt-get update")
-    conn.sudo("echo 'yes' | apt-get install -y oracle-java8-installer")
-
-
-@task(hosts=hosts)
 def install_python(conn):
     conn.sudo("add-apt-repository ppa:deadsnakes/ppa")
     conn.sudo("apt-get update")
@@ -80,7 +71,6 @@ def install_python(conn):
 @task(hosts=hosts)
 def install(conn):
     install_packages(conn)
-    install_java(conn)
     install_python(conn)
 
 
@@ -137,7 +127,7 @@ def run_app(conn):
         conn.run('source venv/bin/activate && gunicorn teleplata.main:"create_app()"')
 
 
-ns = Collection(pull_repo, install, install_packages, install_java, install_python, build_statics, create_database,
+ns = Collection(pull_repo, install, install_packages, install_python, build_statics, create_database,
                 configure_server, create_env,
                 run_app)
 ns.configure({'sudo': {'password': 'password'}})

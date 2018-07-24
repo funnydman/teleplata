@@ -1,6 +1,5 @@
 import os
 
-from elasticsearch import Elasticsearch
 from flask import Flask, session, render_template
 from flask_sqlalchemy import SQLAlchemy
 from raven.contrib.flask import Sentry
@@ -49,7 +48,6 @@ def create_app():
                 static_folder=STATIC_FOLDER)
     app.config.from_pyfile('configs/dev.py')
     app.config.from_pyfile('configs/prod.py', silent=True)
-    app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) or None
     app.path_to_tests = os.path.join(BASE_DIR, 'tests')
     init_db(app)
     init_views(app)
