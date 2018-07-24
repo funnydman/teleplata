@@ -1,0 +1,2 @@
+FLASK_APP=teleplata.main
+FLASK_ENV=development
