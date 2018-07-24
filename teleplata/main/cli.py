@@ -28,6 +28,18 @@ def create_user(username, password):
 
 @click.command()
 @with_appcontext
+def users():
+    """Return all users"""
+    from teleplata.auth.models import User
+    user_list = User.query.all()
+    if user_list:
+        click.echo(user_list)
+    else:
+        click.echo("No users")
+
+
+@click.command()
+@with_appcontext
 def get_pdf_report():
     """Make pdf report."""
     from .views import get_pdf_report

@@ -71,6 +71,7 @@ def create_app():
     app.cli.add_command(cli.create_user)
     app.cli.add_command(cli.get_pdf_report)
     app.cli.add_command(cli.drop_db)
+    app.cli.add_command(cli.users)
 
     @app.errorhandler(404)
     def page_not_found(error):
