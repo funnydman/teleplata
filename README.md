@@ -1,5 +1,5 @@
 # teleplata
-> Site for selling circuits for tv
+> SITE FOR SELLING CIRCUITS AND COMPONENTS FOR TVs
 
 [![Build Status](https://travis-ci.org/FUNNYDMAN/teleplata.svg?branch=master)](https://travis-ci.org/FUNNYDMAN/teleplata)
 [![Coverage Status](https://coveralls.io/repos/github/FUNNYDMAN/teleplata/badge.svg?branch=master)](https://coveralls.io/github/FUNNYDMAN/teleplata?branch=master)
@@ -9,42 +9,33 @@
 
 
 ## Getting Started
-1. Install necessary packages
-
-Go to ```deployment``` folder and execute the script
+1. Install ansible package
 ```bash
-bash local.sh
+sudo apt-get update
+sudo apt-get install software-properties-common
+sudo apt-add-repository ppa:ansible/ansible
+sudo apt-get update
+sudo apt-get install ansible
 ```
+2. Specify your variables in ```ansible/group_vars/webservers/web.yml``` file
 
-2. Create and configure database
+3. Run ansible with dev configuration
 
 ```bash
-# change user to postgres and run psql tool
-sudo -su postgres psql
+ansible-playbook ansible/site.yml -i ansible/dev
 ```
 
-```sql
--- run these commands to create database and user
-
-CREATE DATABASE databasename;
-CREATE USER username WITH password 'password'
-GRANT ALL ON DATABASE databasename TO username;
-ALTER USER username CREATEDB;
-```
-3. Create python virtual environment and install packages
-```bash
-# in the project directory execute
-virtualenv --python=$(which python3) venv
-source venv/bin/activate 
-pip install -r requirements.txt
-
-```
 4. Run webpack to collect static
 
 Go to ```static``` directory and execute
 ```bash
 npm install
 npm run dev
+```
+
+5. Run application
+```bash
+flask run
 ```
 
 ## Screenshots

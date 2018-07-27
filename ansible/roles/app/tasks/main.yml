@@ -27,15 +27,15 @@
     name: "{{ item }}"
     state: latest
   with_items:
-    - vim
-    - git
-    - virtualenv
-    - python3-pip
-    - postgresql
-    - libpq-dev
-    - postgresql-contrib
-    - python3-psycopg2
-    - build-essential
+  - vim
+  - git
+  - virtualenv
+  - python3-pip
+  - postgresql
+  - libpq-dev
+  - postgresql-contrib
+  - python3-psycopg2
+  - build-essential
 
 - name: Install the gpg key for nodejs LTS
   become: yes
@@ -76,6 +76,7 @@
   apt:
     deb: 'https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.xenial_amd64.deb'
     install_recommends: yes
+    update_cache: yes
 
 
 - name: Collect statics with webpack
