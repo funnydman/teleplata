@@ -1,0 +1,12 @@
+---
+- hosts: webservers
+  gather_facts: no
+  tasks:
+  - include_role:
+      name: prod
+    when: "ENV  == 'prod'"
+  - include_role:
+      name: app
+
+#  roles:
+#   - app
