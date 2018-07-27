@@ -49,6 +49,7 @@ def create_app():
     app.config.from_pyfile('configs/dev.py')
     app.config.from_pyfile('configs/prod.py', silent=True)
     app.path_to_tests = os.path.join(BASE_DIR, 'tests')
+
     init_db(app)
     init_views(app)
     sentry.init_app(app)
