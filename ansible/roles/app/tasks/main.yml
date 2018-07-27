@@ -1,3 +1,8 @@
+- name: Install common packages
+  become: yes
+  apt:
+    name: python3-apt
+
 - name: Check that the /usr/bin/python3.6 exists
   stat:
     path: /usr/bin/python3.6
