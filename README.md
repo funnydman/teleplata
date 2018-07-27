@@ -27,8 +27,10 @@ ansible-playbook ansible/site.yml -i ansible/dev
 
 4. Run webpack to collect static
 
-Go to ```static``` directory and execute
+
 ```bash
+# go to static directory and execute
+
 npm install
 npm run dev
 ```
