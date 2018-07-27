@@ -4,7 +4,7 @@
   tasks:
   - include_role:
       name: prod
-    when: "ENV  == 'prod'"
+    when: "inventory_hostname_short  == 'prod'"
   - include_role:
       name: app
 

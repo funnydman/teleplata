@@ -1,6 +1,6 @@
 user: dzmitry
 
-ENV: 'prod'
+#ENV: 'prod'
 
 REPO_URL: 'https://github.com/FUNNYDMAN/teleplata.git'
 PROJECT_NAME: 'teleplata'
