@@ -1,3 +1,5 @@
+sudo: required
+
 language: python
 python:
   - "3.6"
@@ -14,7 +16,7 @@ install:
 
 script:
   - ansible-playbook -v ansible/site.yml -i ansible/production --syntax-check
-  - ansible-playbook -vv ansible/site.yml -i ansible/dev
+  - ansible-playbook -vv ansible/site.yml -i ansible/dev -b
   - tox
 
 after_success:
