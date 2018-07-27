@@ -10,4 +10,4 @@ def logout(client):
 
 
 def test_login(client, app, auth_client):
-    assert client.get('/auth/login').status_code == 200
+    assert client.get('/admin/login').status_code == 200

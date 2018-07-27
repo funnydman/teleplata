@@ -1,4 +1,4 @@
-from teleplata.auth.models import User
+from teleplata.admin.models import User
 from teleplata.main.models import Samsung
 
 
