@@ -1,5 +1,5 @@
 [webservers:vars]
-ansible_python_interpreter=/usr/bin/python3
+ansible_python_interpreter=/usr/bin/python3.6
 
 [webservers]
 localhost ansible_connection=local
