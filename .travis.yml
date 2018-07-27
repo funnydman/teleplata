@@ -3,18 +3,13 @@ python:
   - "3.6"
 
 before_install:
- - sudo apt-get update
- - sudo apt-get install -y software-properties-common
- - sudo apt-add-repository -y ppa:ansible/ansible
- - sudo apt-get update
- - sudo apt-get install -y ansible
+  - sudo pip install ansible
 
 install:
   - pip install -r requirements.txt
 
 script:
-  - ansible-playbook -v ansible/site.yml -i ansible/production --syntax-check
-  - ansible-playbook -vv ansible/site.yml -i ansible/dev -b
+  - ansible-playbook -v ansible/site.yml -i ansible/dev -b
   - tox
 
 after_success:
