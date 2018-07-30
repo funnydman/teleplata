@@ -24,7 +24,7 @@ class MyAdminIndexView(AuthMixin, admin.AdminIndexView):
 
 
 class MyModelView(AuthMixin, ModelView):
-    searchable_columns = MODEL_FIELDS
+    column_searchable_list = MODEL_FIELDS
     form_excluded_columns = ('pub_date',)
     can_export = True
 
