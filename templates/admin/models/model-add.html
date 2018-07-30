@@ -1,5 +1,5 @@
 {% extends 'admin/admin.html' %}
-
+{% import 'admin/models/macro.html' as macro %}
 {% block model_add %}
     <div class="row">
         <div class="col-md-12">
@@ -13,8 +13,6 @@
 
             <div class="model-add">
                 <form method="POST" enctype="multipart/form-data">
-                    <label for="model">Модель:</label>
-                    <input type="text" name="model" id="model" required>
                     {% with messages = get_flashed_messages() %}
                         {% if messages %}
                             {% for message in messages %}
@@ -22,36 +20,10 @@
                             {% endfor %}
                         {% endif %}
                     {% endwith %}
-                    <label for="power">power:</label>
-                    <input type="text" name="power" id="power">
 
-                    <label for="t_con">t-con:</label>
-                    <input type="text" name="t_con" id="t_con">
-
-                    <label for="main">main:</label>
-                    <input type="text" name="main" id="main">
-
-                    <label for="x_main">x-main:</label>
-                    <input type="text" name="x_main" id="x_main">
-
-                    <label for="y_main">y-main:</label>
-                    <input type="text" name="y_main" id="y_main">
-
-                    <label for="logic">logic:</label>
-                    <input type="text" name="logic" id="logic">
-
-                    <label for="invertor">invertor:</label>
-                    <input type="text" name="invertor" id="invertor">
-
-                    <label for="led_driver">led-driver:</label>
-                    <input type="text" name="led_driver" id="led_driver">
-
-                    <label for="y_scan">y_scan:</label>
-                    <input type="text" name="y_scan" id="y_scan">
-
-                    <label for="y_sus">y_sus:</label>
-                    <input type="text" name="y_sus" id="y_sus">
-
+                    {% for field_name in MODEL_FIELDS %}
+                        {{ macro.render_input_field(field_name) }}
+                    {% endfor %}
 
                     <input class="button" type="submit" value="Добавить">
                     {% if is_sent_ok %}

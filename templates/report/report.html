@@ -88,11 +88,14 @@
                             <th>Модель</th>
                             <th>Power</th>
                             <th>t-con</th>
+                            <th>main</th>
                             <th>x-main</th>
                             <th>y-main</th>
                             <th>logic</th>
                             <th>invertor</th>
+                            <th>led-driver</th>
                             <th>y-scan</th>
+                            <th>y-sus</th>
                         </tr>
                         {% for item in models[brand] %}
                             {% if item %}
@@ -100,11 +103,14 @@
                                     <td>{{ item.model }}</td>
                                     <td>{{ item.power }}</td>
                                     <td>{{ item.t_con }}</td>
+                                    <td>{{ item.main }}</td>
                                     <td>{{ item.x_main }}</td>
                                     <td>{{ item.y_main }}</td>
                                     <td>{{ item.logic }}</td>
                                     <td>{{ item.invertor }}</td>
+                                    <td>{{ item.led_driver }}</td>
                                     <td>{{ item.y_scan }}</td>
+                                    <td>{{ item.y_sus }}</td>
                                 </tr>
                             {% endif %}
                         {% endfor %}

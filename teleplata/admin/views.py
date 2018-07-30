@@ -4,6 +4,7 @@ from flask import Blueprint, render_template, request, flash, session, url_for, 
 
 from teleplata.admin.models import User
 from teleplata.main import db, TEMPLATE_FOLDER, STATIC_FOLDER
+from teleplata.main.common import MODEL_FIELDS
 from teleplata.main.utils import get_class_by_tablename
 from .utils import get_form_data
 
@@ -80,11 +81,14 @@ def add_new_model(brand):
         new_model_obj = brand(model=form_data['model'],
                               power=form_data['power'],
                               t_con=form_data['t_con'],
+                              main=form_data['main'],
                               x_main=form_data['x_main'],
                               y_main=form_data['y_main'],
                               logic=form_data['logic'],
                               invertor=form_data['invertor'],
-                              y_scan=form_data['y_scan'])
+                              led_driver=form_data['led_driver'],
+                              y_scan=form_data['y_scan'],
+                              y_sus=form_data['y_sus'])
         if not brand.query.filter_by(model=form_data['model']).first():
             db.session.add(new_model_obj)
             db.session.commit()
@@ -94,9 +98,11 @@ def add_new_model(brand):
             flash(message)
     last_five_models = brand.query.order_by(brand.pub_date.desc()).limit(5).all()
     return render_template('admin/models/model-add.html', brand=brand,
-                           is_sent_ok=is_sent_ok, message=message, last_five_models=last_five_models)
+                           is_sent_ok=is_sent_ok, message=message, last_five_models=last_five_models,
+                           MODEL_FIELDS=MODEL_FIELDS)
 
 
+# this functionality now doesn't work!
 @bp_admin.route('/edit/<brand>/<model>', methods=['GET', 'POST'])
 @login_required
 def model_edit(brand, model):

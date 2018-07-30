@@ -1,0 +1,4 @@
+{% macro render_input_field(name, type='text') %}
+    <label for="{{ name }}">{{ name }}:</label>
+    <input type="{{ type }}" name="{{ name }}" id="{{ name }}">
+{% endmacro %}

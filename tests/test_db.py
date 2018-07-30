@@ -14,6 +14,7 @@ def test_model_fields_exist():
     new_obj = Samsung(model="test1", power="some")
     for item in MODEL_FIELDS:
         assert item in new_obj.__table__.columns.keys()
+    assert len(MODEL_FIELDS) == 11
 
 
 def test_restore_backup():
