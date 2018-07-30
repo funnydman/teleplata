@@ -5,10 +5,13 @@ from flask_sqlalchemy import SQLAlchemy
 from raven.contrib.flask import Sentry
 from werkzeug.contrib.fixers import ProxyFix
 
+from teleplata.admin.views import admin, MyModelView
+
 sentry = Sentry(
     dsn='https://3dda6990d61640b0ba148be5130230e1:6d66f1b5ae6b487889bba83e1f8bc9d9@sentry.io/1248274')
 
 db = SQLAlchemy()
+from teleplata.main.models import Samsung
 
 BASE_DIR = os.path.dirname(
     os.path.dirname(
@@ -23,19 +26,9 @@ STATIC_FOLDER = os.path.join(PROJECT_DIR, 'static')
 TEMPLATE_FOLDER = os.path.join(PROJECT_DIR, 'templates')
 
 
-def load_models():
-    from . import models
-
-
-load_models()
-
-
 def init_views(app):
     from . import views
     app.register_blueprint(views.main)
-
-    from teleplata.admin import views
-    app.register_blueprint(views.bp_admin)
 
 
 def init_db(app):
@@ -76,5 +69,8 @@ def create_app():
     @app.errorhandler(500)
     def server_error(error):
         return render_template('500.html'), 500
+
+    admin.init_app(app)
+    admin.add_view(MyModelView(Samsung, db.session))
 
     return app

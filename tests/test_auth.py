@@ -1,13 +1,9 @@
 def login(client, username, password):
-    return client.post('/auth/login', data=dict(
+    return client.post('/login', data=dict(
         username=username,
         password=password
     ), follow_redirects=True)
 
 
 def logout(client):
-    return client.get('/auth/logout', follow_redirects=True)
-
-
-def test_login(client, app, auth_client):
-    assert client.get('/admin/login').status_code == 200
+    return client.get('/logout', follow_redirects=True)

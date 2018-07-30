@@ -30,7 +30,6 @@ def create_user(username, password):
 @with_appcontext
 def users():
     """Return all users"""
-    from teleplata.auth.models import User
     user_list = User.query.all()
     if user_list:
         click.echo(user_list)

@@ -2,7 +2,6 @@
 {% block title %}Платы для телевизора {{ brand.__tablename__ }}{% endblock %}
 {% block home %}
     {% include 'header.html' %}
-    <h1>{{ g.user.username }}</h1>
     <div class="main">
         <div class="row">
             <div class="col-md-12">
@@ -88,15 +87,6 @@
                                     <li>
                                         <a class="model-title-link" href="#">{{ model.model }}
                                         </a>
-                                        {% if g.user %}
-                                            <a class="model-edit"
-                                               href="
-{{ url_for("admin.model_edit", brand=brand.__tablename__, model=model.model) }}">&#9998;</a>
-                                            <form method="POST" class="model-delete">
-                                                <input type="hidden" name="model-id-delete" value="{{ model.id }}">
-                                                <input type="submit" value="&#10006;">
-                                            </form>
-                                        {% endif %}
                                     </li>
                                 </ul>
                                 <ul data-id="{{ model.id }}"
