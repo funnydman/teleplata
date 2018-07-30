@@ -74,6 +74,6 @@ def client(app):
 @pytest.fixture
 def auth_client(client):
     return client.post(
-        '/auth/login',
+        '/login',
         data={'username': "TELEPLATA", 'password': "TELEPLATA"}
     )
