@@ -49,7 +49,9 @@ def create_app():
 
     init_db(app)
     init_views(app)
-    sentry.init_app(app)
+    if sentry:
+        sentry.init_app(app)
+
     app.wsgi_app = ProxyFix(app.wsgi_app)
 
     @app.before_request
