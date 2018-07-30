@@ -12,7 +12,7 @@ try:
 
     sentry = Sentry(dsn=DSN)
 except ImportError:
-    pass
+    sentry = None
 
 db = SQLAlchemy()
 from teleplata.main.models import Samsung

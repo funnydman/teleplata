@@ -3,6 +3,8 @@ from flask import g, redirect, url_for, request
 from flask_admin import expose
 from flask_admin.contrib.sqla import ModelView
 
+from teleplata.main.common import MODEL_FIELDS
+
 
 class AuthMixin:
     @property
@@ -22,6 +24,9 @@ class MyAdminIndexView(AuthMixin, admin.AdminIndexView):
 
 
 class MyModelView(AuthMixin, ModelView):
+    searchable_columns = MODEL_FIELDS
+    form_excluded_columns = ('pub_date',)
+    can_export = True
 
     def is_accessible(self):
         return self.is_authenticated

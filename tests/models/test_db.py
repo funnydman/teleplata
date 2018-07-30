@@ -17,10 +17,6 @@ def test_model_fields_exist():
     assert len(MODEL_FIELDS) == 11
 
 
-def test_restore_backup():
-    pass
-
-
 def test_add_new_entry(session):
     new_obj = Samsung(model="test", power="some")
     session.add(new_obj)
