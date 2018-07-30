@@ -1,0 +1,5 @@
+[run]
+source = teleplata
+
+[report]
+omit = teleplata/alembic/*
