@@ -7,8 +7,12 @@ from werkzeug.contrib.fixers import ProxyFix
 
 from teleplata.admin.views import admin, MyModelView
 
-sentry = Sentry(
-    dsn='https://3dda6990d61640b0ba148be5130230e1:6d66f1b5ae6b487889bba83e1f8bc9d9@sentry.io/1248274')
+try:
+    from instance.local_settings import DSN
+
+    sentry = Sentry(dsn=DSN)
+except ImportError:
+    pass
 
 db = SQLAlchemy()
 from teleplata.main.models import Samsung
