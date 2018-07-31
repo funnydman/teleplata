@@ -6,7 +6,8 @@ install:
   - pip install -r requirements.txt
 
 
-before_script: "./travis/before-script.sh"
+before_script:
+  - sudo bash ./travis/before-script.sh
 
 script:
   - tox
