@@ -13,15 +13,6 @@
   with_items:
     - nginx
 
-#configure nginx
-#- name: copy the nginx config file and restart
-#  become: yes
-#  copy:
-#    src: '{{ PROJECT_DIR }}/instance/nginx.conf'
-#    dest: /etc/nginx/sites-available/tele.conf
-#    remote_src: yes
-#    mode: preserve
-
 - name: copy nginx config
   become: yes
   template: src=nginx.j2 dest=/etc/nginx/sites-available/tele.conf
