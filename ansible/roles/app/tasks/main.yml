@@ -5,6 +5,7 @@
   register: python_result
 
 - name: Update apt-cache
+  become: yes
   apt: update_cache=yes
   tags: packages, python
   when: python_result.stat.exists == False
@@ -13,12 +14,14 @@
   become: yes
   apt_repository:
     repo: ppa:deadsnakes/ppa
+  tags: python
 
 - name: install python3.6
   become: yes
   apt:
     name: python3.6
     update_cache: yes
+  tags: python
 
 
 - name: Install common packages
