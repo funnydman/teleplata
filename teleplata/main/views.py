@@ -48,7 +48,7 @@ def logout():
 
 
 @main.route('/', methods=['GET', 'POST'])
-@main.route('/<brand>', methods=['POST', 'GET'])
+@main.route('/<brand>/', methods=['POST', 'GET'])
 def home(brand='samsung'):
     brand = get_class_by_tablename(brand)
     page = request.args.get('page', 1, type=int)
