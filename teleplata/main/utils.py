@@ -17,12 +17,17 @@ def get_class_by_tablename(tablename):
             return c
 
 
-def get_pdf_report(source, destination):
+def get_models_by_brand_dict():
     models_by_brand_dict = {}
     for brand in common.BRAND_LIST:
         models = get_class_by_tablename(brand).query.all()
         if not models_by_brand_dict.get(brand):
             models_by_brand_dict.update({brand: models})
+    return models_by_brand_dict
+
+
+def get_pdf_report(source, destination):
+    models_by_brand_dict = get_models_by_brand_dict()
     options = {
         'footer-right': '[page]'
     }
