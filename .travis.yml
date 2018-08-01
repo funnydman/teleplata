@@ -13,4 +13,4 @@ script:
   - tox
 
 after_success:
-  - caveralls -v
+  - coveralls -v
