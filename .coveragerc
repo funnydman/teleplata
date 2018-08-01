@@ -2,4 +2,4 @@
 source = teleplata
 
 [report]
-omit = teleplata/alembic/*
+omit = */alembic/*

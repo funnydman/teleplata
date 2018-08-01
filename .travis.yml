@@ -11,6 +11,8 @@ before_script:
 
 script:
   - tox
+  - coverage run -m pytest tests/
+  - coverage report -m
 
 after_success:
   - caveralls
